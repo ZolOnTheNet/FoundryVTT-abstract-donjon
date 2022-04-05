@@ -1,0 +1,291 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <input name="data.initialise" type="{{texteAff}}" value="{{data.initialise}}"/>
+    <table> 
+        <tr>
+            <td>
+                <a class="Ele-rerollall"  data-ref="ALL" data-key="all"><img src="systems/abstractd/ui/logoAD.png" title="Relance tous les dés du personnage" height="128" width="325" alt="Abstract Logo"/></a>
+            </td>
+            <td>
+                <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128" /> 
+            </td>
+            <td>
+                <a class="Ele-rerollall" title="Relance tous les dés" data-ref="ALL" data-key="all"><i class="fas fa-recycle"></i> tout relancer</a><br><br>
+                {{#if isDMG }}
+                <a class="mode-dommage" title="mode dommage" data-ref="dmg"><i class="fas fa-toggle-on"></i> &nbsp;Dommage</a>
+                {{else}}
+                <a class="mode-dommage" title="mode normal" data-ref="nor">Normal&nbsp;<i class="fas fa-toggle-off"></i></a>
+                {{/if}}
+            </td>
+        </tr>
+    </table>
+    <table  text-align="center">
+      <tr>
+        <th class="titrenb" >NOM du Personnage</th>
+        <th class="titrenb">NIVEAU</th>
+        <th class="titrenb">XP</th>
+      </tr>  
+      <tr>
+        <td class="donneecentre" width="60%"><input  name="name" type="text" value="{{actor.name}}" placeholder="Name" /></div></td>
+        <td class="donneecentre" width="20%"><input  name="niveau" type="text" value="{{data.niveau}}" placeholder="1" /></td>
+        <td class="donneecentre" width="20%"><input name="xp" type="text" value="{{data.xp}}" placeholder="0" /></td>
+      </tr>
+    </table>
+    
+<div>
+    <table style="width: 100%" border:"1"  >
+        <tr >
+            <td class="titrenb" width="50%">
+                <div class="box">
+                    <div class="blackcellpadding"></div>
+                    <div class="onlignedroite">{{data.for.nom}}</div>
+                    <div class="blackcell">
+                        <input  name="data.for.nbdes" type="text" value="{{data.for.nbdes}}" placeholder="1" width="10%"/>
+                    </div>
+                    <div class="blackcellpadding">
+                        <a class="Ele-reroll" title="Relance les dés vides" data-ref="A" data-key="for"><i class="fas fa-dice"></i></a>&nbsp;&nbsp;
+                        <a class="Ele-rerollall" title="Relance tous les dés" data-ref="A" data-key="for"><i class="fas fa-dice-six"></i></a>
+                    </div>
+                </div>
+            </td>
+            <td class="titrenb"  width="50%">
+                <div class="box">
+                    <div class="blackcellpadding"></div>
+                    <div class="onlignedroite">{{data.dex.nom}}</div>
+                    <div class="blackcell">
+                        <input  name="data.dex.nbdes" type="text" value="{{data.dex.nbdes}}" placeholder="1" />
+                    </div>
+                    <div class="blackcellpadding">
+                        <a class="Ele-reroll" title="Relance les dés vides" data-ref="A" data-key="dex"><i class="fas fa-dice"></i></a>&nbsp;&nbsp;
+                        <a class="Ele-rerollall" title="Relance tous les dés" data-ref="A" data-key="dex"><i class="fas fa-dice-six"></i></a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr >
+            <td>Réserve de FOR
+                <input name="data.for.lstdesjson" type="{{texteAff}}" value="{{data.for.lstdesjson}}" />
+                <table>
+                    <tr class="lstdescentrer">        
+                        {{#each data.for.lstdes as |des key|}}
+                            <td><label class ="selectDice" data-ref="for" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="{{../data.for.lstdes.repdessin}}{{des.valeur}}.png" height="25" width="25" alt="dés-{{des.token}}"/> <br>{{key}} : {{des}} </label></td>
+                        {{/each}}
+                    </tr>
+                </table>
+            </td>
+            <td>Réserve de DEX
+                <input name="data.dex.lstdesjson" type="{{texteAff}}" value="{{data.dex.lstdesjson}}" />
+                <table>
+                    <tr class="lstdescentrer">        
+                        {{#each data.dex.lstdes as |des key|}}
+                        <td><label class ="selectDice" data-ref="dex" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés-{{data.dex.lstdes.repdessin}}" height="25" width="25" alt="dés"/><br>{{key}} : {{des}}</label> </td>
+                        {{/each}}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="textminiattrib">{{data.for.petitxt}}</td>
+            <td class="textminiattrib">{{data.dex.petitxt}}</td>
+        </tr>
+        <tr >
+            <td class="titrenb">
+                <div class="box">
+                    <div class="blackcellpadding"></div>
+                    <div class="onlignedroite">{{data.sag.nom}}</div>
+                    <div class="blackcell">
+                        <input  name="actor.data.data.sag.nbdes" type="text" value="{{actor.data.data.sag.nbdes}}" placeholder="1" />
+                    </div>
+                    <div class="blackcellpadding">
+                        <a class="Ele-reroll" title="Relance les dés vides" data-ref="A" data-key="sag"><i class="fas fa-dice"></i></a>&nbsp;&nbsp;
+                        <a class="Ele-rerollall" title="Relance tous les dés" data-ref="A" data-key="sag"><i class="fas fa-dice-six"></i></a>
+                    </div>
+
+                </div>
+            </div>
+            </td>
+            <td class="titrenb">
+                <div class="box">
+                    <div class="blackcellpadding"></div>
+                    <div class="onlignedroite">{{data.int.nom}}</div>
+                    <div class="blackcell">
+                        <input  name="data.int.nbdes" type="text" value="{{data.int.nbdes}}" placeholder="1" />
+                    </div>
+                    <div class="blackcellpadding">
+                        <a class="Ele-reroll" title="Relance les dés vides" data-ref="A" data-key="int"><i class="fas fa-dice"></i></a>&nbsp;&nbsp;
+                        <a class="Ele-rerollall" title="Relance tous les dés" data-ref="A" data-key="int"><i class="fas fa-dice-six"></i></a>
+                   </div>
+
+                </div>
+            </td>
+        </tr>
+        <tr >
+            <td>Réserve SAG
+                <input name="data.sag.lstdesjson" type="{{texteAff}}" value="{{data.sag.lstdesjson}}" />
+                <table>
+                    <tr class="lstdescentrer">        
+                        {{#each data.sag.lstdes as |des key|}}
+                        <td><label class ="selectDice" data-ref="sag" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés" height="25" width="25" alt="dés"/><br>{{key}} : {{des}} </label></td>
+                        {{/each}}
+                    </tr>
+                    <tr >
+
+                    </tr>
+                </table>
+            </td>
+            <td>Réserve INT
+                <input name="data.int.lstdesjson" type="{{texteAff}}" value="{{data.int.lstdesjson}}" />
+                <table>
+                    <tr class="lstdescentrer">        
+                        {{#each data.int.lstdes as |des key|}}
+                        <td><label class ="selectDice" data-ref="int" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés" height="25" width="25" alt="dés"/> <br>{{key}} : {{des}}</label></td>
+                        {{/each}}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="textminiattrib">{{data.sag.petitxt}}</td>
+            <td class="textminiattrib">{{data.int.petitxt}}</td>
+        </tr>
+        <tr >
+            <td class="titrenb">                
+                <div class="box">
+                    <div class="blackcellpadding"></div>
+                    <div class="onlignedroite">BONUS</div>
+                    <div class="blackcell">
+                        <input  name="data.bonus.nbdes" type="text" value="{{data.bonus.nbdes}}" placeholder="1" />
+                    </div>
+                    <div class="blackcellpadding">
+                        <a class="Ele-reroll" title="Relance les dés vides" data-ref="A" data-key="bonus"><i class="fas fa-dice"></i></a>&nbsp;&nbsp;
+                        <a class="Ele-rerollall" title="Relance tous les dés" data-ref="A" data-key="bonus"><i class="fas fa-dice-six"></i></a>
+                    </div>
+
+                </div> 
+            </td>
+            <td class="titrenb"><a class="select-annuler" title="Annuler la selection"><i class="fas fa-eject"></i></a>&nbsp;&nbsp;SELECTION
+                &nbsp;<a class="select-proposer" title="Proposer la selection"><i class="fas fa-check"></i></a>&nbsp;&nbsp;
+                <a class="select-valider" title="Valider la selection"><i class="fas fa-check-double"></i></a> &nbsp;&nbsp;
+                {{#if isCMB }}
+                <a class="mode-combat" title="mode combat" data-ref="cmb"><i class="fas fa-toggle-on"></i> &nbsp;cmb</a>
+                {{else}}
+                <a class="mode-combat" title="mode obstacle" data-ref="obj">obj&nbsp;<i class="fas fa-toggle-off"></i></a>
+                {{/if}}
+            </td>
+        </tr>
+        <tr >
+            <td >Reserve
+                <input name="data.bonus.lstdesjson" type="{{texteAff}}" value="{{data.bonus.lstdesjson}}" />
+                <table>
+                    <tr  class="lstdescentrer">
+                        {{#each data.bonus.lstdes as |des key|}}
+                        <td><label class ="selectDice" data-ref="bonus" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés : {{../data.repdessin}}{{des}}.png" height="25" width="25" alt="Dés-{{des}}"/><br>{{key}} : {{des}} </label></td>
+                        {{/each}}
+                    </tr>
+                </table>
+            </td>
+            <td >Choix utilisateur
+                <input name="data.selection.lstdesjson" type="{{texteAff}}" value="{{data.selection.lstdesjson}}" />
+                <input name="data.selection.lstprovjson" type="{{texteAff}}" value="{{data.selection.lstprovjson}}" />
+                <input name="data.selection.lstindicejson" type="{{texteAff}}" value="{{data.selection.lstindicejson}}" />
+                <table>
+                    <tr  class="lstdescentrer">        
+                        {{#each data.selection.lstori as |des key|}}
+                        <td><label class ="selectSelDice" data-ref="selection" data-key="{{key}}"><img src="{{../data.repdessin}}{{des.valeur}}.png" title="Dés: {{../data.repdessin}}{{des.valeur}}.png}}" height="25" width="25" alt="Dés-{{des.valeur}}"/><br> {{des.aff}}</label></td>
+                        {{/each}}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<table>
+<tr>
+    <table>
+        <tr>
+            <th width="5%"></th>
+            <th  width="40%">Nom du trait</th>
+            <th  width="5%"># dés</th>
+            <th  width="45%">Réserves</th>
+            <th  width="5%">Act.</th>
+        </tr>
+        {{#each data.traits}}
+        <tr class="item" data-item-id="{{this.data._id}}">
+            <td><img src="{{img}}" data-edit="img" title="{{name}}" height="32" width="32" /></td>
+            <td>
+                {{name}}
+                <div class="textminiattrib">
+                {{data.data.petitxt}}
+                </div>
+                <input name="this.data.data.lstdesjson" type="{{../texteAff}}" value="{{this.data.data.lstdesjson}}" />
+            </td>
+            <td class="lstdescentrer">{{data.data.nbdes}}</td>
+            <td class="lstdescentrer">
+                <div class="box">
+                    {{#each data.data.lstdes as |desT inddt|}}
+                    <div class="flexone">
+                        <label class ="selectItemDice" data-ref="{{../this.data._id}}" data-key="{{inddt}}"><img src="{{../../data.repdessin}}{{desT}}.png" title="Dés: {{../dat.data.lstdes.repdessin}}{{desT}}.png" height="25" width="25" alt="Dés-{{desT}}"/><br>{{@index}} : {{desT}}</label>
+                    </div>
+                    <div class="flexone">&nbsp;</div>
+                    {{/each}}
+                </div>
+            <td>
+                <a class="Ele-reroll" title="Relance les dés vides" data-ref="T" data-key="{{this.data._id}}"><i class="fas fa-dice"></i></a>
+                <a class="Ele-rerollall" title="Relance tous les dés" data-ref="T" data-key="{{this.data._id}}"><i class="fas fa-dice-six"></i></a>
+            </td>
+            <td>
+                <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+        {{/each}}
+        </tr>
+    </table>
+</tr>
+<tr>
+    <table>
+        <tr>
+            <th width="5%"></th>
+            <th  width="40%">Nom de l'objet ou du trésor</th>
+            <th  width="5%"># dés</th>
+            <th  width="45%">Réserves</th>
+            <th  width="5%">Act.</th>
+        </tr>
+        {{#each data.objets as |obj ind|}}
+        <tr class="item" data-item-id="{{this.data._id}}">
+            <td><img src="{{img}}" data-edit="img" title="{{this.data._id}}" height="32" width="32" /></td>
+            <td>
+                {{name}}
+                <input name="this.data.data.lstdesjson" type="{{../texteAff}}" value="{{this.data.data.lstdesjson}}" />
+                <div class="textminiattrib">
+                    {{data.data.petitxt}}
+                </div>
+            </td>
+            <td class="lstdescentrer">{{data.data.nbdes}}</td>
+            <td class="lstdescentrer">
+                <div class="box">
+                    {{#each data.data.lstdes as |desObj inddo|}}
+                    <div class="flexone">
+                        <label class ="selectItemDice" data-ref="{{../this.data._id}}" data-key="{{inddo}}"><img src="{{../../data.repdessin}}{{desObj}}.png" title="Dés: {{../data.repdessin}}{{desObj}}.png" height="25" width="25" alt="Dés-{{desObj}}"/><br>{{inddo}} : {{desObj}}</label>
+                    </div>
+                    <div class="flexone">&nbsp;</div>
+                    {{/each}}
+                </div>
+            </td>
+            <td>
+                <a class="Ele-reroll" title="Relance les dés vides" data-ref="O" data-key="{{this.data._id}}"><i class="fas fa-dice"></i></a>
+                <a class="Ele-rerollall" title="Relance tous les dés" data-ref="O" data-key="{{this.data._id}}"><i class="fas fa-dice-six"></i></a>
+            </td>
+            <td>
+                <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+        {{/each}}
+        </tr>
+    </table>
+</tr>
+
+<div class="titrenb">NOTES</div>
+<textarea name="data.notesPerso" value="{{data.notesPerso}}" rows="5">{{data.notesPerso}}</textarea><br>
+<input  name="data.mapdesitems" type="{{texteAff}}" value="{{data.mapdesitems}}" placeholder="mapdesitems" size="80%"/>
+</form>

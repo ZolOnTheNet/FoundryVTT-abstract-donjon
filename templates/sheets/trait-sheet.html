@@ -1,0 +1,30 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <img src="systems/abstractd/ui/logoAD.png" title="Abstract Logo" height="128" width="325" alt="Abstract Logo"/>
+    <img src="{{item.img}}" data-edit="img" title="{{item.data._id}}" height="128" width="128"/>
+    <h1><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+    <div class="lstdescentrer">
+        <div class="box">
+            <div class="flexone">
+                <div>
+                     <label>Dés :
+                         <input name="data.nbdes" type="text" value="{{data.nbdes}}" placeholder="1"/>
+                         <input name="data.lstdesjson" type="hidden" value="{{data.lstdesjson}}" />
+                     </label>
+                 </div>
+                 <div>
+                     <a class="Ele-reroll" title="Relance les dés vides" data-ref="T" data-key="{{item.data._id}}"><i class="fas fa-dice"></i></a>
+                     &nbsp;&nbsp;&nbsp;
+                     <a class="Ele-rerollall" title="Relance tous les dés" data-ref="T" data-key="{{item.data._id}}"><i class="fas fa-dice-six"></i></a>
+                 </div>
+             </div>
+             {{#each data.lstdes as |des key|}}
+                <div class="flexone">
+                    <img src="{{../data.repdessin}}{{des}}.png" title="Des={{../data.repdessin}}{{des}}" height="25" width="25" alt="{{des}}"/><br>{{key}} : {{des}}
+                </div>
+            {{/each}}
+        </div>
+    </div>
+    <br>
+    description ou condition d'utilisation:
+    <textarea name="data.petitxt" value="{{data.petitxt}}" rows="5">{{data.petitxt}}</textarea>
+</form>

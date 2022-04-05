@@ -1,0 +1,136 @@
+{
+    "Actor": {
+        "types": [
+            "personnage",
+            "pnj",
+            "obstacle",
+            "defi",
+            "plateaumonstre"
+        ],
+        "personnage": {
+            "initialise":"false",
+            "niveau":1,
+            "typeinfo":"pj",
+            "couleurde":"blanc",
+            "repdessin":"systems/abstractd/ui/d6-blanc-",
+            "xp":0,
+            "for": {
+                "nom":"Force",
+                "abrv":"FOR",
+                "nbdes":4,
+                "lstdesjson" : "",
+                "petitxt":"Trancher, Endurer, Briser, Sauter, Grimper, Plier, Nager, Souffler, Courir, Broyer, Pousser, Tirer, Soulever, Porter, Encaisser, Arracher, Lancer"
+            },           
+            "dex": {
+                "nom":"Dextérité",
+                "abrv":"DEX",
+                "nbdes":3,
+                "lstdesjson" : "",
+                "petitxt":"Esquiver, Parer, équilibre, Basculer, Rouler, Viser, Danser, Attraper, Ramasser, Désarmer,, Nouer, S'échapper, Dévier; Transpercer, Se retourner"
+            },           
+            "sag": {
+                "nom":"Sagesse",
+                "abrv":"SAG",
+                "nbdes":2,
+                "lstdesjson" : "",
+                "petitxt":"Communier, Sentir, Motiver, Exhorter, Sympathiser, Persuader, Intimider, Pressentir, Ordonner, Commander, Provoquer, Embrouiller, Canaliser"
+            },           
+            "int" : {
+                "nom":"Intelligence",
+                "abrv":"INT",
+                "nbdes":1,
+                "lstdesjson" : "",
+                "petitxt":"Convaincre, Se souvenir, D&eacute;duire, Raisonner, D&eacute;chiffrer, Inventer, Chercher, D&eacute;battre, Supposern &Eacute;tudier, R&eacute;soudre, Mystifier, Incanter, M&eacute;diter"
+            },           
+            "bonus": {
+                "nom":"Dé de bonus",
+                "abrv":"Bonus",
+                "nbdes":1,
+                "lstdesjson" : "",
+                "petitxt":""
+            }, 
+            "selection":{
+                "nom":"Des sélectionnés",
+                "abrv":"choix",
+                "nbdes":3,
+                "mode":"cmb",
+                "lstdesjson" : "",
+                "lstprovjson" : "",
+                "lstindicejson":"",
+                "petitxt":"votre choix actuel"
+            },
+            "traits":[],
+            "objets":[],
+            "mapdesitems":"",
+            "uiddesitems":"",
+            "notesPerso":"aucune note"
+        },
+        "pnj":{
+            "initialise":false,
+            "typeinfo":"pnj",
+            "couleurde":"noir",
+            "repdessin":"systems/abstractd/ui/d6-noir-",
+            "type":"boss",
+            "diffnbpj":5,
+            "difficulte":10,
+            "lstdesjson":"",
+            "lstattaques":[],
+            "objets":[],
+            "vulnerabilite":"",
+            "resistance":"",
+            "notes":""
+        },
+        "obstacle":{
+            "initialise":false,
+            "typeinfo":"obs",
+            "couleurde":"noir",
+            "type":"obstacle",
+            "difficulte":1,
+            "lstdesjson":"",
+            "notes":""
+        },
+        "defi":{
+            "initialise":false,
+            "typeinfo":"defi",
+            "couleurde":"noir",
+            "type":"obstacle",
+            "difficulte":1,
+            "lstdes":[],
+            "attaques":"",
+            "notes":""
+        },
+        "plateaumonstre":{
+            "initialise":false,
+            "nbjoueur":3,
+            "lstjoueurs":[],
+            "lstmonstres":[],
+            "lstdemiboss":[],
+            "lstboss":[],
+            "defi":[]
+        }
+    },
+    "Item": {
+        "types": [
+            "trait",
+            "objet",
+            "deattaque"
+        ],
+        "trait": {
+            "initialise":false,
+            "nbdes": 1,
+            "lstdesjson" : "",
+            "petitxt":""
+        },
+        "objet": {
+            "initialise":false,
+            "nbdes": 1,
+            "lstdesjson" : "",
+            "petitxt":""
+        },
+        "deattaque": {
+            "codede":6,
+            "nom":"morsure",
+            "petitxt":"-1 en force"
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "name": "abstractd",
+    "title": "Abstract Donjon",
+    "description": "Le système d'abstract Donjon FR FoundryVTT!",
+    "version": "0.0.2",
+    "minimumCoreVersion": "0.9",
+    "compatibleCoreVersion": "0.9",
+    "templateVersion": 2,
+    "author": "Zol on the net",
+    "esmodules": ["module/abstractd.js"],
+    "styles": ["css/abstractd.css"],
+    "scripts": [],
+    "packs": [],
+    "languages": [],
+    "gridDistance": 1.5,
+    "gridUnits": "m",
+    "primaryTokenAttribute": "",
+    "secondaryTokenAttribute": "",
+    "url": "",
+    "manifest": "",
+    "download": "",
+    "license": "LICENSE.txt"
+  }

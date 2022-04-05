@@ -1,0 +1,19 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <img src="systems/abstractd/ui/logoAD.png" title="Abstract Logo" height="128" width="325" alt="Abstract Logo"/>
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="128" width="128"/>
+    <h1><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+    <table>
+        <tr>
+            <td>
+                Code dé : <input name="data.codede" type="text" value="{{data.codede}}" placeholder="de 1 à 6"/>
+            </td>
+            <td>
+                <img src="{{data.repdessin}}{{data.codede}}.png" title="" height="30" width="30"/>
+            </td>
+            <td>
+                Attaque :
+                <textarea name="data.petitxt" value="{{data.petitxt}}" rows="5">{{data.petitxt}}</textarea>
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,128 @@
+//dedans je mets toutes les petites structures dans les tables []
+lstdes : [unde...]
+    unde: {
+        "source" : {}
+        "no":0,
+        "selection":0,
+        "valeur":4,
+        "couleur":"blanc"
+    }
+selection: [unde...]
+
+traits: [ trait(item)...]
+objets: [ objet(item)...]
+
+        switch (data.actor.data.type) {
+            case "personnage":
+                break;
+            case "pnj": // a envisager : gestion de item => armes magiques
+                break;
+            case "plateaumonstre": // quand j'aurais fini le reste
+                break;
+            case "defi":
+            case "obstacle": // même comportement mais avec dommage ou pas
+            default:
+                break;
+        }
+
+mapdesitems = une map [[code _id,jsondes] ]
+
+en fait, j'ai un problème de stockage, les champs JSON sont mis en toString pour les structure simples donc je change tout en chaine
+et je vais les lires pour faire le boulot (rajout de [] par exemple)
+tous les objet majeur ont un champs initalise à Faux, passer à vrai quand initialisé
+
+bout de code utile : 
+<img src="systems/abstractd/ui/de-blanc-{{des}}.png" data-edit="img" title="{{des}}" height="32" width="32" />
+
+venant de personnage-sheet
+    <div>
+        <label>Blessure</label>
+        <input name="data.blessure" type="text" value="{{data.blessure}}" placeholder="Blessure" />
+    </div>
+
+    {{#each data.attributs as |attribut attName|}}
+    <div>
+        <label class="jetdedes" data-name="{{attName}}" data-dice="{{attribut.valeur}}">{{attName}}</label>
+        <input name="data.attributs.{{attName}}.valeur" type="text" value="{{attribut.valeur}}"
+            placeholder="{{attName}}" />
+    </div>
+    <ul>
+        {{#each attribut.competences as |competence cmpName|}}
+        <li>
+            <label class="jetdedes" data-name="{{cmpName}}" data-dice="{{competence.valeur}}"
+                data-attDice="{{attribut.valeur}}">{{cmpName}}</label>
+            <input name="data.attributs.{{attName}}.competences.{{cmpName}}.valeur" type="text"
+                value="{{competence.valeur}}" placeholder="{{cmpName}}" />
+        </li>
+        {{/each}}
+    </ul>
+    {{/each}}
+    <h3>Armes</h3>
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Dégâts</th>
+            <th>Portée</th>
+        </tr>
+    {{#each actor.data.data.armes as |item key|}}
+    <tr class="item" data-item-id="{{item.data._id}}">
+        <td><img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="32" width="32" /></td>
+        <td>{{item.name}}</td>
+        <td>{{item.data.degats}}</td>
+        <td>{{item.data.portee}}</td>
+        <td>
+            <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </td>
+    </tr>
+    {{/each}}
+    </table>
+
+    <h3>Protections</h3>
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Protection</th>
+        </tr>
+    {{#each actor.data.data.protections as |item key|}}
+    <tr class="item" data-item-id="{{item._id}}">
+        <td><img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="32" width="32" /></td>
+        <td>{{item.name}}</td>
+        <td>{{item.data.protection}}</td>
+        <td>
+            <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </td>
+    </tr>
+    {{/each}}
+    </table>
+
+
+    code a backup ofinitPJ(pdata, tout = false, vide = true, zero = true ) {
+    /** fonction d'initialisation des PJ : attribut, bonus, selection (les objets et les traits sont à zéro)
+     *  
+     */
+     let attrib = ["for","dex","int","sag","bonus"];
+     attrib.foreach((atr, index) => {
+        if(tout) {
+            // tous sont retirer, ou initialisés
+            let lst = new lstdes(pdata[atr].nbdes, "blanc", pdata[atr].nbdes, true ); // les dés sont blanc
+            lst.lancerLesDes(true);
+            //console.log(lst);
+            pdata[atr].lstdes = lst;
+        } else if(zero) {
+            // seulement ceux qui sont à zero en nobmre de dés 
+            if(pdata[atr].lstdes.lenght == 0) {
+                let lst = new lstdes(pdata[atr].nbdes); // les dés sont blanc
+                lst.lancerLesDes(true);
+                //console.log(lst);
+                pdata[atr].lstdes = lst;    
+            }
+        }else if (vide) {
+            // seulement les case vide
+
+        }
+     });
+    }

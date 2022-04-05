@@ -1,0 +1,98 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <input name="data.initialise" type="{{texteAff}}" value="{{data.initialise}}"/>
+    <table> 
+        <tr>
+            <td>
+                <a class="Ele-rerollall"  data-ref="ALL" data-key="all"><img src="systems/abstractd/ui/logoAD.png" title="Relance tous les dés du personnage" height="128" width="325" alt="Abstract Logo"/></a>
+            </td>
+            <td>
+                <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128" /> 
+            </td>
+            <td>
+                <br><br><a class="Ele-rerollall" title="Relance tous les dés" data-ref="ALL" data-key="all"><i class="fas fa-recycle"></i> tout relancer</a><br><br>
+                <a class="pnj-showall" title="Message des dés" data-ref="ALL" data-key="all"><i class="fas fa-eye"></i> Montrer à Tous</a>
+            </td> <i class="fas fa-eye"></i>
+        </tr>
+    </table>
+    <table  text-align="center">
+      <tr>
+        <th class="titrenb">NOM du PNJ</th>
+        <th class="titrenb">nb PJ</th>
+        <th class="titrenb">type</th>
+        <th class="titrenb">Nb Dés</th>
+        <th class="titrenb">Dés/PJ</th>
+        <th class="titrenb">Total</th>
+      </tr>  
+      <tr>
+        <td class="donneecentre" width="50%"><input  name="name" type="text" value="{{actor.name}}" placeholder="Name" /></div></td>
+        <td class="donneecentre" width="10%"><input  name="data.nbjoueurs" type="text" value="{{data.nbjoueurs}}" placeholder="1" /></td>
+        <td class="donneecentre" width="10%"><select  name="data.type">
+                {{selectOptions TypesAdv selected=TypeValue}}
+                </select>
+             </td>
+        <td class="donneecentre" width="10%"><input name="data.difficulte" type="text" value="{{data.difficulte}}" placeholder="0" /></td>
+        <td class="donneecentre" width="10%"><input name="data.diffnbpj" type="text" value="{{data.diffnbpj}}" placeholder="0" /></td>
+        <td class="donneecentre" width="10%"><input name="data.desTotal" type="text" value="{{data.desTotal}}" placeholder="0" /></td>
+      </tr>
+    </table>
+   
+    <div class="box">
+        <div class="blackcellpadding"></div>
+        <div class="onlignedroite">Réserve :</div>
+        <div class="blackcellpadding">
+            <a class="Ele-rerollall" title="Relance tous les dés" data-ref="A" data-key="res"><i class="fas fa-dice-six"></i></a>
+        </div>
+        <div class="blackcellpadding"></div>
+    </div>
+    <input name="data.lstdesjson" type="{{texteAff}}" value="{{data.lstdesjson}}" />
+    <table>
+        <tr  class="lstdescentrer">
+            {{#each data.lstdes as |des key|}}
+            <td><label class ="selectDiceN" data-ref="bonus" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés : {{../data.repdessin}}{{des}}.png" height="25" width="25" alt="Dés-{{des}}"/><br>{{des}} </label></td>
+            {{/each}}
+        </tr>
+    </table>
+    <table >
+        <tr>
+            <td class="titrenb" width="50%">
+                Vulnérabilites
+            </td>
+            <td class="titrenb" width="50%">
+                Résistances
+            </td>
+        </tr>   
+        <tr>
+            <td>
+                <textarea name="data.vulnerabilite" rows="5">{{data.vulnerabilite}}</textarea>
+            </td>
+            <td>
+                <textarea name="data.resistance" rows="5">{{data.resistance}}</textarea>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th class="titrenb" width="5%"></th>
+            <th class="titrenb" width="35%">Nom de l'attaque</th>
+            <th class="titrenb" width="50%">Action</th>
+            <th class="titrenb" width="5%"></th>
+        </tr>
+        {{#each data.lstattaques as |obj ind|}}
+        <tr class="item" data-item-id="{{this.data._id}}">
+            <td><img src="{{../data.repdessin}}{{obj.codedes}}.png"  height="30" width="30" /></td>
+            <td>
+                {{name}}
+            </td>
+            <td class="lstdescentrer">
+                {{data.data.petitxt}}
+            </td>
+            <td class="lstdescentrer">
+                E
+            </td>
+        </tr>
+        {{/each}}
+        </tr>
+    </table>
+    description ou condition d'utilisation:
+    <textarea name="data.notes" rows="5">{{data.notes}}</textarea>
+</form>
