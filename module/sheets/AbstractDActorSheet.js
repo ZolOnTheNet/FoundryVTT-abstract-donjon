@@ -88,14 +88,22 @@ export default class AbstractDActorSheet extends ActorSheet {
             case "pnj": // a envisager : gestion de item => armes magiques
                 persodata.lstattaques = data.items.filter(item => item.type === "deattaque");
                 persodata.objets = data.items.filter(item => item.type === "objet");
+                if(persodata.modeAttaque===undefined) persodata.modeAttaque = false;
                 if(persodata.nbjoueurs === undefined) {
                     if(persodata.nbpj === undefined) persodata.nbjoueurs =3;
                     else persodata.nbjoueurs = persodata.nbpj;
                 } // l'info est mis dans nbpj si elle n'existe pas on part du principe de 3
+                // ci dessous à changer : ajouter les objets gagnables (le nombre de dés)
                 let temp = parseInt(persodata.difficulte,10)  + parseInt(persodata.diffnbpj,10) * parseInt(persodata.nbjoueurs,10) ;
                 persodata.desTotal = temp; // faut juste que je trouve comment detecter qu'il y a modif de total (desTotals) -champ old ?
                 data.TypesAdv = { "adv":"Adversaire", "boss":"Boss" };
                 data.TypeValue = persodata.type; 
+                if(persodata.bckpdes === undefined) persodata.bckpdes = JSON.parse(persodata.bckpdesjson); // utiliser par la feuille, pas besoin de faire plus.  
+                if(persodata.bckpdes.length < temp) {
+                    for(let i = 0; i < temp; i++) {
+                        if(persodata.bckpdes[i] ===undef) persodata.bckpdes[i] =0;
+                    }
+                }
                 break;
             case "plateaumonstre": // quand j'aurais fini le reste
                 break;
@@ -117,6 +125,7 @@ export default class AbstractDActorSheet extends ActorSheet {
         html.find('.selectItemDice').click(this._onSelectDiceItem.bind(this));
         html.find('.selectSelDice').click(this._onSelectDiceSelection.bind(this));
         if(this.actor.data.type == "personnage") html.find('.mode-dommage').click(this._onModeDommage.bind(this));
+        if(this.actor.data.type == "pnj") html.find('.selectDiceNPC').click(this._onSelectDiceSelectionNPC.bind(this));
     //     // items 
         html.find('.item-edit').click(this._onItemEdit.bind(this));
         html.find('.item-delete').click(this._onItemDelete.bind(this));
@@ -131,6 +140,9 @@ export default class AbstractDActorSheet extends ActorSheet {
             html.find('.select-proposer').click(this._onSelectProposer.bind(this));
             html.find('.select-valider').click(this._onSelectValider.bind(this));
             html.find('.mode-combat').click(this._onSelectChangeMode.bind(this));
+       } else if(this.actor.data.type == "pnj"){
+            html.find('.select-annuler').click(this._onSelectAnnulerNPC.bind(this));
+            html.find('.select-valider').click(this._onSelectValiderNPC.bind(this));
        }
        if(this.actor.data.type == "pnj") html.find('.pnj-showall').click(this._onPnjShowAll.bind(this));
     }
@@ -167,6 +179,7 @@ export default class AbstractDActorSheet extends ActorSheet {
         });
     }
 
+    
     /**
      * click sur un dé de selection 
      *
@@ -195,8 +208,46 @@ export default class AbstractDActorSheet extends ActorSheet {
     _onSelectDiceItem(event){
         switch (data.actor.data.type) {
             case "personnage":
+                console.log("Choix d'un item ! _onSelectDiceItem ------------------");
+                console.log(event);
+                
+                const baseDataN = this.actor.data;
+                const persodata = baseDataN.data;
+                const item = this.getItemFromEvent(event);
+                let itemRef = event.currentTarget.dataset.ref;
+                let indice = event.currentTarget.dataset.key;
+                console.log("vous avez choisi : "+itemRef+":"+indice);
+                let itmb = baseDataN.items.get(itemRef).data;
+                if(itmb !== undefined) {
+                    if(itmb.data.lstdes[indice] >0 ) { // sauvegardable
+                        let seli = utils.selIndice(persodata, itmb.type, indice); // cherche une place
+                        persodata.selection.lstprov[seli] = itemRef;
+                        persodata.selection.lstindice[seli] = indice;
+                        persodata.selection.lstdes[seli]= itmb.data.lstdes[indice];
+                        item.data.data.lstdes[indice] = -1;
+                        item.data.data.lstdesjson = JSON.stringify(item.data.data.lstdes);
+                        // recopie vers actor -> items/map
+                        itmb.data.lstdesjson = item.data.data.lstdesjson;
+                        itmb.data.lstdes = item.data.data.lstdes;
+                        // la source de itmb // non identique et toujours pas svg
+                        itmb._source.data.lstdes = item.data.data.lstdes;
+                        itmb._source.data.lstdesjson = item.data.data.lstdesjson;
+                        // set ajouter
+                        persodata.selection.lstdesjson = JSON.stringify(persodata.selection.lstdes);
+                        persodata.selection.lstprovjson = JSON.stringify(persodata.selection.lstprov);
+                        persodata.selection.lstindicejson = JSON.stringify(persodata.selection.lstindice);
+                        //item.data.data.lstdes = baseData.items[noIndex].data.lstdes
+                        //item.data.data.lstdesjson = baseData.items[noIndex].data.lstdesjson;
+                        let jb = utils.backupMap(this.actor.data.data, this.actor.items);
+                        this.actor.data.data.mapdesitems=jb.lstdes; 
+                        this.actor.data.data.uiddesitems=jb.uiddes;
+                        this.render(true);
+                    }
+                    
+                }
                 break;
             case "pnj": // a envisager : gestion de item => armes magiques
+                //rien à faire compter dans les dés 
                 break;
             case "plateaumonstre": // quand j'aurais fini le reste
                 break;
@@ -204,101 +255,65 @@ export default class AbstractDActorSheet extends ActorSheet {
             case "obstacle": // même comportement mais avec dommage ou pas
             default:
                 break;
-        }
-        console.log("Choix d'un item ! _onSelectDiceItem ------------------");
-        console.log(event);
-        
-        const baseDataN = this.actor.data;
-        const persodata = baseDataN.data;
-        const item = this.getItemFromEvent(event);
-        let itemRef = event.currentTarget.dataset.ref;
-        let indice = event.currentTarget.dataset.key;
-        console.log("vous avez choisi : "+itemRef+":"+indice);
-        let itmb = baseDataN.items.get(itemRef).data;
-        if(itmb !== undefined) {
-            if(itmb.data.lstdes[indice] >0 ) { // sauvegardable
-                let seli = utils.selIndice(persodata, itmb.type, indice); // cherche une place
-                persodata.selection.lstprov[seli] = itemRef;
-                persodata.selection.lstindice[seli] = indice;
-                persodata.selection.lstdes[seli]= itmb.data.lstdes[indice];
-                item.data.data.lstdes[indice] = -1;
-                item.data.data.lstdesjson = JSON.stringify(item.data.data.lstdes);
-                // recopie vers actor -> items/map
-                itmb.data.lstdesjson = item.data.data.lstdesjson;
-                itmb.data.lstdes = item.data.data.lstdes;
-                // la source de itmb // non identique et toujours pas svg
-                itmb._source.data.lstdes = item.data.data.lstdes;
-                itmb._source.data.lstdesjson = item.data.data.lstdesjson;
-                // set ajouter
-                persodata.selection.lstdesjson = JSON.stringify(persodata.selection.lstdes);
-                persodata.selection.lstprovjson = JSON.stringify(persodata.selection.lstprov);
-                persodata.selection.lstindicejson = JSON.stringify(persodata.selection.lstindice);
-                //item.data.data.lstdes = baseData.items[noIndex].data.lstdes
-                //item.data.data.lstdesjson = baseData.items[noIndex].data.lstdesjson;
-                let jb = utils.backupMap(this.actor.data.data, this.actor.items);
-                this.actor.data.data.mapdesitems=jb.lstdes; 
-                this.actor.data.data.uiddesitems=jb.uiddes;
-                this.render(true);
-            }
-            
         }
      }
 
     _onSelectDiceAttr(event){
         // faudra gere le mode dommage (if(isDMG))!!)
-        switch (data.actor.data.type) {
-            case "personnage":
-                break;
-            case "pnj": // a envisager : gestion de item => armes magiques
-                break;
-            case "plateaumonstre": // quand j'aurais fini le reste
-                break;
-            case "defi":
-            case "obstacle": // même comportement mais avec dommage ou pas
-            default:
-                break;
-        }
-        const baseData = super.getData();
-        const persodata = baseData.actor.data.data;
-        let atr = event.currentTarget.dataset.ref;
-        let indice = event.currentTarget.dataset.key
-        if(this.actor.data.data.dmg) {
-            if(persodata[atr].lstdes[indice]> 0) {
-                persodata[atr].lstdes[indice]--;
-                persodata[atr].lstdesjson = JSON.stringify(persodata[atr].lstdes);
-            }
-        } else {
-            console.log("Oucht on play ! _onSelectDiceAttr ------------------");
-            console.log(event);
-            if(persodata[atr].lstdes[indice] > 0) { // si le dés n'est pas vide, le remettre là d'où il vient
-                let seli = utils.selIndice(persodata, atr, indice);
-                if(persodata.selection.lstdes[seli] > 0) {
-                    // remettre la valeur d'où elle vient
-                    if(persodata.selection.lstprov[seli].length < 7) { // attribut car moins de 7 caractères
-                        let oriattr = persodata.selection.lstprov[seli].toLowerCase();
-                        let oriind = persodata.selection.lstindice[seli];
-                        persodata[oriattr].lstdes[oriind]= persodata.selection.lstdes[seli]; // remise du codex
-                        persodata[oriattr].lstdesjson = JSON.stringify(persodata[oriattr].lstdes);
-                    } else { // items
-                        let oriitem = baseData.actor.data.items.get(persodata.selection.lstprov[seli]);
-                        let oriind = persodata.selection.lstindice[seli];
-                        oriitem.data.data.lstdes[oriind]= persodata.selection.lstdes[seli];
-                        oriitem.data.data.lstdesjson= JSON.stringify(oriitem.data.data.lstdes);
-                        baseData.actor.data.items.set(persodata.selection.lstprov[seli], oriitem);
+        // switch (data.actor.data.type) {
+        //     case "personnage":
+                const baseData = super.getData();
+                const persodata = baseData.actor.data.data;
+                let atr = event.currentTarget.dataset.ref;
+                let indice = event.currentTarget.dataset.key
+                if(this.actor.data.data.dmg) {
+                    if(persodata[atr].lstdes[indice]> 0) {
+                        persodata[atr].lstdes[indice]--;
+                        persodata[atr].lstdesjson = JSON.stringify(persodata[atr].lstdes);
+                    }
+                } else {
+                    console.log("Oucht on play ! _onSelectDiceAttr ------------------");
+                    console.log(event);
+                    if(persodata[atr].lstdes[indice] > 0) { // si le dés n'est pas vide, le remettre là d'où il vient
+                        let seli = utils.selIndice(persodata, atr, indice);
+                        if(persodata.selection.lstdes[seli] > 0) {
+                            // remettre la valeur d'où elle vient
+                            if(persodata.selection.lstprov[seli].length < 7) { // attribut car moins de 7 caractères
+                                let oriattr = persodata.selection.lstprov[seli].toLowerCase();
+                                let oriind = persodata.selection.lstindice[seli];
+                                persodata[oriattr].lstdes[oriind]= persodata.selection.lstdes[seli]; // remise du codex
+                                persodata[oriattr].lstdesjson = JSON.stringify(persodata[oriattr].lstdes);
+                            } else { // items
+                                let oriitem = baseData.actor.data.items.get(persodata.selection.lstprov[seli]);
+                                let oriind = persodata.selection.lstindice[seli];
+                                oriitem.data.data.lstdes[oriind]= persodata.selection.lstdes[seli];
+                                oriitem.data.data.lstdesjson= JSON.stringify(oriitem.data.data.lstdes);
+                                baseData.actor.data.items.set(persodata.selection.lstprov[seli], oriitem);
+                            }
+                        }
+                        persodata.selection.lstprov[seli] = atr.toUpperCase()
+                        persodata.selection.lstindice[seli] = indice;//persodata[atr].lstdes.lstd[indice].source;
+                        persodata.selection.lstdes[seli] = persodata[atr].lstdes[indice];
+                        persodata.selection.lstdesjson = JSON.stringify(persodata.selection.lstdes);
+                        persodata.selection.lstprovjson = JSON.stringify(persodata.selection.lstprov);
+                        persodata.selection.lstindicejson = JSON.stringify(persodata.selection.lstindice);
+                        utils.simpleChatMessage("A Choisi :"+ atr + ", " + indice); 
+                        persodata[atr].lstdes[indice] =-1;
+                        persodata[atr].lstdesjson = JSON.stringify(persodata[atr].lstdes);
+                        //this.actor.data.data.mapdesitems=utils.backupMap(this.actor.data.data, this.actor.items);
                     }
                 }
-                persodata.selection.lstprov[seli] = atr.toUpperCase()
-                persodata.selection.lstindice[seli] = indice;//persodata[atr].lstdes.lstd[indice].source;
-                persodata.selection.lstdes[seli] = persodata[atr].lstdes[indice];
-                persodata.selection.lstdesjson = JSON.stringify(persodata.selection.lstdes);
-                persodata.selection.lstprovjson = JSON.stringify(persodata.selection.lstprov);
-                persodata.selection.lstindicejson = JSON.stringify(persodata.selection.lstindice);
-                utils.simpleChatMessage("A Choisi :"+ atr + ", " + indice); 
-                persodata[atr].lstdes[indice] =-1;
-                persodata[atr].lstdesjson = JSON.stringify(persodata[atr].lstdes);
-                //this.actor.data.data.mapdesitems=utils.backupMap(this.actor.data.data, this.actor.items);
-            }
-        }
+        //         break;
+        //     case "pnj": // a envisager : gestion de item => armes magiques
+        //         break;
+        //     case "plateaumonstre": // quand j'aurais fini le reste
+        //         break;
+        //     case "defi":
+        //     case "obstacle": // même comportement mais avec dommage ou pas
+        //     default:
+        //         break;
+        // }
+
         this.render(true);
     }
 
@@ -385,9 +400,9 @@ export default class AbstractDActorSheet extends ActorSheet {
             });
         // cas des attributs
         const persodata = this.actor.data.data;
-        const actor = actor.data;
+        const actor = this.actor;
 
-        switch (data.actor.data.type) {
+        switch (actor.data.type) {
             case "personnage":
                 console.log("AbstractD | reroll All ");
                 let attrib = ["for","dex","int","sag","bonus"];
@@ -578,6 +593,7 @@ export default class AbstractDActorSheet extends ActorSheet {
         console.log("vous avez choisi : "+mode+"=>"+persodata.selection.mode);
     }
 
+    // ----------- PNJ : autres fonctions
     _onPnjShowAll(event){
         const persodata = this.actor.data.data;
         let aAfficher = "Votre adversaire, <b>"+this.actor.data.name +"</b>, est de cette puissance :<br>";
@@ -596,6 +612,55 @@ export default class AbstractDActorSheet extends ActorSheet {
         utils.simpleChatMessage(aAfficher)
     }
 
+// traitment pour les PNJ : la selection de dés (avec backup)
+    _onSelectDiceSelectionNPC(event){
+        console.log("selection d'un dés du personnage non joueur");
+        let persodata = this.actor.data.data;
+        let indice = event.currentTarget.dataset.key;
+        if(persodata.modeAttaque) { // le MJ a choisie une attaque et valide un dé
+            if(persodata.mindesattaque >= persodata.lstdes[indice]) {
+                // on a un dé au minimum de même puissance
+                
+            } else {
+                // BEEEEPPPPP !
+            }
+        } else { //suppression du dé (modeAttaque sur normal en gros) on rajoute le backup
+            // vérfier que l'on a bien lstdesjson et lstdes en accord...
+            if(persodata.bckpdesjson === undefined) {
+                persodata.bckpdesjson = "[]";
+                persodata.bckpdes = [];
+            } else {
+                if(persodata.bckpdesjson == "") persodata.bckpdesjson = "[]"; //inutile aprés
+                persodata.bckpdes = JSON.parse(persodata.bckpdesjson);
+            }
+            //--- 
+            if(persodata.lstdes[indice]>0) { // le dé est normal, il faut le backupé et l'enlever => 0
+                persodata.bckpdes[indice] = persodata.lstdes[indice]; // le plus simple plus besoin de gerer à part les indices
+                persodata.lstdes[indice] = 0;
+                persodata.bckpdesjson = JSON.stringify(persodata.bckpdes);
+                persodata.lstdesjson = JSON.stringify(persodata.lstdes); // synchro
+            } else { // le dé est vide, il faut le remettre
+                if(persodata.bckpdes[indice] >0) { // le plus simple plus besoin de gerer à part les indices}
+                    persodata.lstdes[indice] = persodata.bckpdes[indice]; // le plus simple plus besoin de gerer à part les indices
+                    persodata.bckpdes[indice] = 0;
+                    persodata.bckpdesjson = JSON.stringify(persodata.bckpdes);
+                    persodata.lstdesjson = JSON.stringify(persodata.lstdes); // synchro
+                }
+            }
+        }
+        this.render(true);
+    }
+
+    _onSelectAnnulerNPC(event){
+        // annule les choix du backup pour le NPC
+        let persodata = this.actor.data.data;
+
+    }
+
+    _onSelectValider(event){
+        let persodata = this.actor.data.data;
+
+    }
     // fout le bordel
     // _updateObject(event, formData){
     // _onSubmit(event, updateData, preventClose, preventRender) {
