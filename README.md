@@ -18,6 +18,8 @@ based on the french translation book's of Abstact Dongeon : Abstract Donjon - i 
   
   - translation : 0%
   
+  I think, it can play at this time... Not fully usefull...
+  
 ## french
 Vesion du System Abstract Donjon pour la table virtuelle FoundryVTT. C'est mon premier système sur cette plateforme. Mais comme j'ai vu que personne n'a fait de proposition, je vais en faire une !
 
@@ -31,7 +33,7 @@ Objectif : utiliser le jeu, et perso apprendre le Javascript (et me permettre de
   - Feuille de PNJ en cours : selection des dés détruits avec possibilité d'annulation
           Todo :  Attaque de dé : choix d'un dés d'attaque, puis choix d'un dé pour l'attaque soit réalisée.
                   Annulation ou validation des dés détruit
-                  ajouter les dés des équipements (l'idée est que l'on peut mettre une armes ou un objet apportant un ou plusieurs pour que les joueurs les récupères
+                  ajouter les dés des équipements (l'idée est que l'on peut mettre une armes ou un objet apportant un ou plusieurs dés pour que les joueurs les récupères
   - objets and trésors : 100%
   - Traits : 100%
   - Dice Attack (for NPC) : 50%
@@ -42,12 +44,12 @@ Objectif : utiliser le jeu, et perso apprendre le Javascript (et me permettre de
   - traduction : 0%
   - faute d'orhographe : 80%
  
-J'ai mis ce projet parce que je veux apprendre a faire un système sous FoundryVTT et le partager. Su cette dernière partie, j'ai compris qu'il fallait mieux passer par Github... D'où
+J'ai mis ce projet parce que je veux apprendre a faire un système sous FoundryVTT et le partager. Su cette dernière partie, j'ai compris qu'il fallait mieux passer par Github... D'où ce projet
 
 
 ## Instalation
 
 Holly God ! I didn't know about this ! dezip and copy to foundrydata/data/systems, may be !?
 
-<fr> : à la grace de dieu, j'ai pas encore lu cette affaire là !! Je dirais, dezipper les fichiers dans foundrydata/data/systems
+\<french\> : à la grace de dieu, j'ai pas encore lu cette affaire là !! Je dirais, dezipper les fichiers dans foundrydata/data/systems
   
