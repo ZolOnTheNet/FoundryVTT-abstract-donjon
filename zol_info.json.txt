@@ -25,6 +25,21 @@ objets: [ objet(item)...]
                 break;
         }
 
+decouverte : 
+_token  le token courrant, selectionné (le premier sélectionné si plusieurs)
+    targeted : un set contenant les cibles selectionnée par le joueur
+canvas : le canvas courant ->
+    tokens._controlled
+on peut savoir qui est dedans avec le code : 
+let a = []
+for (const property in canvas.tokens._controlled) {
+   a.push(property);
+}
+
+une autre entrée important : game
+game.users
+game.actors
+
 mapdesitems = une map [[code _id,jsondes] ]
 
 en fait, j'ai un problème de stockage, les champs JSON sont mis en toString pour les structure simples donc je change tout en chaine

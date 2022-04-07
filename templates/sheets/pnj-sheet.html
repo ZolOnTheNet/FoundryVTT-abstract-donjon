@@ -11,7 +11,7 @@
             <td>
                 <br><br><a class="Ele-rerollall" title="Relance tous les dés" data-ref="ALL" data-key="all"><i class="fas fa-recycle"></i> tout relancer</a><br><br>
                 <a class="pnj-showall" title="Message des dés" data-ref="ALL" data-key="all"><i class="fas fa-eye"></i> Montrer à Tous</a>
-            </td> <i class="fas fa-eye"></i>
+            </td>
         </tr>
     </table>
     <table  text-align="center">
@@ -45,10 +45,23 @@
         <div class="blackcellpadding"></div>
     </div>
     <input name="data.lstdesjson" type="{{texteAff}}" value="{{data.lstdesjson}}" />
+    <input name="data.bckpdesjson" type="{{texteAff}}" value="{{data.bckpdesjson}}" />
+    <input name="data.bckpindicejson" type="{{texteAff}}" value="{{data.bckpindicejson}}" />
     <table>
         <tr  class="lstdescentrer">
             {{#each data.lstdes as |des key|}}
-            <td><label class ="selectDiceN" data-ref="bonus" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés : {{../data.repdessin}}{{des}}.png" height="25" width="25" alt="Dés-{{des}}"/><br>{{des}} </label></td>
+            <td><label class ="selectDiceNPC" data-ref="reserve" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés : {{../data.repdessin}}{{des}}.png" height="35" width="35" alt="Dés-{{des}}"/></label></td>
+            {{/each}}
+        </tr>
+    </table>
+    <table>
+        <tr class="lstdescentrer">
+            <td width="220px">
+                <a class="select-annuler" title="Annuler la selection"><i class="fas fa-eject"></i></a>&nbsp;&nbsp; dés utilisés
+                &nbsp;&nbsp;<a class="select-valider" title="Valider la selection"><i class="fas fa-check-double"></i></a> :
+            </td>
+            {{#each data.bckpdes as |desB key|}}
+            <td><label class ="selectDiceNPC" data-ref="backup" data-key="{{key}}"><img src="{{../data.repdessin}}{{desB}}.png" title="Dés : {{../data.repdessin}}{{desB}}.png" height="25" width="25" alt="Dés-{{desB}}"/></label></td>
             {{/each}}
         </tr>
     </table>
@@ -72,14 +85,14 @@
     </table>
     <table>
         <tr>
-            <th class="titrenb" width="5%"></th>
-            <th class="titrenb" width="35%">Nom de l'attaque</th>
+            <th class="titrenb" width="7%"></th>
+            <th class="titrenb" width="28%">Nom de l'attaque</th>
             <th class="titrenb" width="50%">Action</th>
             <th class="titrenb" width="5%"></th>
         </tr>
         {{#each data.lstattaques as |obj ind|}}
         <tr class="item" data-item-id="{{this.data._id}}">
-            <td><img src="{{../data.repdessin}}{{obj.codedes}}.png"  height="30" width="30" /></td>
+            <td><img src="{{../data.repdessin}}{{obj.data.data.codede}}.png"  height="30" width="30" /></td>
             <td>
                 {{name}}
             </td>
@@ -87,7 +100,8 @@
                 {{data.data.petitxt}}
             </td>
             <td class="lstdescentrer">
-                E
+                <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
             </td>
         </tr>
         {{/each}}

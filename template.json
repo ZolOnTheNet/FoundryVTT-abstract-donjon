@@ -78,7 +78,8 @@
             "objets":[],
             "vulnerabilite":"",
             "resistance":"",
-            "notes":""
+            "notes":"",
+            "bckpdesjson":"[]"
         },
         "obstacle":{
             "initialise":false,
