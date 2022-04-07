@@ -9,7 +9,7 @@ based on the french translation book's of Abstact Dongeon : Abstract Donjon - i 
 
 ### Actualy:
   - Character sheet seem to be full for 80% 
-  - NPC sheet is in developpement
+  - NPC sheet is in developpement 80%, backup selection for dice dommage
   - objects and tresorus : 100%
   - Traits : 100%
   - Dice Attack (for NPC) : 50%
@@ -28,12 +28,16 @@ Objectif : utiliser le jeu, et perso apprendre le Javascript (et me permettre de
 
 ### Actuellement :
   - Feuille de personnage : fonctionne à 80% hors bug
-  - Feuille de PNJ en cours : manque les attaques de Boss
+  - Feuille de PNJ en cours : selection des dés détruits avec possibilité d'annulation
+          Todo :  Attaque de dé : choix d'un dés d'attaque, puis choix d'un dé pour l'attaque soit réalisée.
+                  Annulation ou validation des dés détruit
+                  ajouter les dés des équipements (l'idée est que l'on peut mettre une armes ou un objet apportant un ou plusieurs pour que les joueurs les récupères
   - objets and trésors : 100%
   - Traits : 100%
   - Dice Attack (for NPC) : 50%
   - obstacle : 0%
   - defis : 0%
+  - Tableau de résolution : 0%, faire un espace permettant au joueur de selectionner leur ennemies et leurs alliés pour simuler une rencontre. En haut, il y aura les alliées, en bas, les ennemies dans cet ordre : Adversaires, demi-boss (+ tard), Boss. C'est un projet, je ne sais pas si c'est réalisable.
 
   - traduction : 0%
   - faute d'orhographe : 80%
