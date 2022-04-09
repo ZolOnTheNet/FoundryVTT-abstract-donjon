@@ -52,6 +52,7 @@ export default class AbstractDActorSheet extends ActorSheet {
                 if(data.data.dmg === undefined) data.data.dmg = false;
                 data.isDMG = data.data.dmg;
                 persodata.selection.lstori = [];
+                if(persodata.selection.lstdes === undefined) persodata.selection.lstdes =[];
                 for(let i = 0; i < persodata.selection.lstdes.length; i++) {
                     // les items marchent pas comme les champs ! c'est la merde
                     let aAfficher = "";
@@ -88,6 +89,8 @@ export default class AbstractDActorSheet extends ActorSheet {
             case "pnj": // a envisager : gestion de item => armes magiques
                 persodata.lstattaques = data.items.filter(item => item.type === "deattaque");
                 persodata.objets = data.items.filter(item => item.type === "objet");
+                if((this.actor.data.img=="icons/svg/mystery-man.svg" || this.actor.data.img =="systems/abstractd/ui/adversaire.png") && this.actor.data.type=="pnj" && persodata.type=="boss") {this.actor.data.img ="systems/abstractd/ui/boss.png"; }
+                if((this.actor.data.img=="icons/svg/mystery-man.svg" || this.actor.data.img =="systems/abstractd/ui/boss.png") && this.actor.data.type=="pnj" && persodata.type=="adv") { this.actor.data.img ="systems/abstractd/ui/adversaire.png"; }
                 if(persodata.modeAttaque===undefined) persodata.modeAttaque = false;
                 if(persodata.nbjoueurs === undefined) {
                     if(persodata.nbpj === undefined) persodata.nbjoueurs =3;
@@ -101,7 +104,7 @@ export default class AbstractDActorSheet extends ActorSheet {
                 if(persodata.bckpdes === undefined) persodata.bckpdes = JSON.parse(persodata.bckpdesjson); // utiliser par la feuille, pas besoin de faire plus.  
                 if(persodata.bckpdes.length < temp) {
                     for(let i = 0; i < temp; i++) {
-                        if(persodata.bckpdes[i] ===undef) persodata.bckpdes[i] =0;
+                        if(persodata.bckpdes[i] ===undefined) persodata.bckpdes[i] =0;
                     }
                 }
                 break;
@@ -589,7 +592,7 @@ export default class AbstractDActorSheet extends ActorSheet {
             // faire maj (fixe of etc...)
         }
  //       this.actor.data.data.mapdesitems=utils.backupMap(this.actor.data.data, this.actor.items);
-        this.render(true)
+        this.render(true);
         console.log("vous avez choisi : "+mode+"=>"+persodata.selection.mode);
     }
 
@@ -639,12 +642,14 @@ export default class AbstractDActorSheet extends ActorSheet {
                 persodata.lstdes[indice] = 0;
                 persodata.bckpdesjson = JSON.stringify(persodata.bckpdes);
                 persodata.lstdesjson = JSON.stringify(persodata.lstdes); // synchro
+                //if(persodata.lstdesd !== undefined && persodata.lstdesd.length != persodata.lstdes.length) this.actor.update( { "persodata": persodata.lstdes });
             } else { // le dé est vide, il faut le remettre
                 if(persodata.bckpdes[indice] >0) { // le plus simple plus besoin de gerer à part les indices}
                     persodata.lstdes[indice] = persodata.bckpdes[indice]; // le plus simple plus besoin de gerer à part les indices
                     persodata.bckpdes[indice] = 0;
                     persodata.bckpdesjson = JSON.stringify(persodata.bckpdes);
                     persodata.lstdesjson = JSON.stringify(persodata.lstdes); // synchro
+                    //if(persodata.lstdesd !== undefined && persodata.lstdesd.length != persodata.lstdes.length) this.actor.update( { "lstdesd": persodata.lstdes });
                 }
             }
         }
@@ -654,12 +659,35 @@ export default class AbstractDActorSheet extends ActorSheet {
     _onSelectAnnulerNPC(event){
         // annule les choix du backup pour le NPC
         let persodata = this.actor.data.data;
-
+        for(let i = 0; i < persodata.bckpdes.length; i++) {
+            if(persodata.bckpdes[i] > 0) {
+                persodata.lstdes[i] = persodata.bckpdes[i]; // le plus simple plus besoin de gerer à part les indices
+                persodata.bckpdes[i] = 0;
+                }
+        }
+        persodata.bckpdesjson = JSON.stringify(persodata.bckpdes);
+        persodata.lstdesjson = JSON.stringify(persodata.lstdes); // synchro          
+        // test pour savoir si on sauvegarderai une liste par ce moyen
+        //if(persodata.lstdesd !== undefined && persodata.lstdesd.length != persodata.lstdes.length) this.actor.update( { "lstdesd": persodata.lstdes });
+        this.render(true);
     }
 
-    _onSelectValider(event){
+    _onSelectValiderNPC(event){
         let persodata = this.actor.data.data;
-
+        let nbdesperdus = 0;
+        for(let i = 0; i < persodata.bckpdes.length; i++) {
+            if(persodata.bckpdes[i] > 0) {
+                //persodata.lstdes[i] = persodata.bckpdes[indice]; // le plus simple plus besoin de gerer à part les indices
+                nbdesperdus++;
+                persodata.bckpdes[i] = 0;
+                }
+        }
+        persodata.bckpdesjson = JSON.stringify(persodata.bckpdes);
+        //persodata.lstdesjson = JSON.stringify(persodata.lstdes); // synchro          
+        // test pour savoir si on sauvegarderai une liste par ce moyen
+        //if(persodata.lstdesd !== undefined && persodata.lstdesd.length != persodata.lstdes.length) this.actor.update( { "lstdesd": persodata.lstdes });
+        utils.simpleChatMessage("Le PNJ "+ this.actor.name +" a perdu " +nbdesperdus + " dés.");
+        this.render(true);
     }
     // fout le bordel
     // _updateObject(event, formData){

@@ -57,7 +57,7 @@
     <table>
         <tr class="lstdescentrer">
             <td width="220px">
-                <a class="select-annuler" title="Annuler la selection"><i class="fas fa-eject"></i></a>&nbsp;&nbsp; dés utilisés
+                <a class="select-annuler" title="Annuler la selection"><i class="fas fa-eject"></i></a>&nbsp;&nbsp; dés consommés
                 &nbsp;&nbsp;<a class="select-valider" title="Valider la selection"><i class="fas fa-check-double"></i></a> :
             </td>
             {{#each data.bckpdes as |desB key|}}
@@ -109,4 +109,11 @@
     </table>
     description ou condition d'utilisation:
     <textarea name="data.notes" rows="5">{{data.notes}}</textarea>
+    <table>
+        <tr  class="lstdescentrer">
+            {{#each data.lstdesd as |des key|}}
+            <td><label class ="selectDiceNPC" data-ref="reserve" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés : {{../data.repdessin}}{{des}}.png" height="35" width="35" alt="Dés-{{des}}"/></label></td>
+            {{/each}}
+        </tr>
+    </table>
 </form>
