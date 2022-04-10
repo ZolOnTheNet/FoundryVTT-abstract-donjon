@@ -22,4 +22,9 @@ Hooks.once("init", async function () {
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("abstractd", AbstractDActorSheet, { makeDefault: true });
     console.log("AbstractD | ActorSheet inscit");
+
+    Handlebars.registerHelper('ismultiple', function (value, div) {
+        return (value+1) % div == 0;
+    });
+    console.log("AbstractD | fonction ismultiple val div est inscrite");
 })

@@ -121,16 +121,16 @@ import  * as utils from "../utils.js";
     }
 
      _prepareBDNpcData(actorData) {
-        if (actorData.type !== 'pnj') return;
+        if (actorData.type === 'personnage') return;
     
         // Make modifications to data here. For example:
         const data = actorData.data;
 
         if(data.nbpj === undefined &&  data.nbjoueurs === undefined) data.nbjoueurs =1; // promis quand je serai calcule le nombre de joueur !
             else if(data.nbjoueurs === undefined) data.nbjoueurs = data.nbpj;
-
+        if( data.diffnbpj == "") data.diffnbpj = 0;
         data.desTotal = parseInt(data.diffnbpj,10) * parseInt(data.nbjoueurs,10) + parseInt(data.difficulte,10); // on prend le mini des deux (10 dés par défaut)
-       
+        
         if(data.lstdesjson === undefined) data.lstdesjson = "";
         if(data.lstdesjson == "") {
             data.lstdes = utils.EtendLesDes([],data.desTotal); // initialisation de la liste
@@ -245,7 +245,7 @@ import  * as utils from "../utils.js";
      * Prepare NPC type specific data.
      */
     _prepareNpcData(actorData) {
-        if (actorData.type !== 'pnj') return;
+        if (actorData.type === 'personnage') return;
     
         const data = actorData.data;
         

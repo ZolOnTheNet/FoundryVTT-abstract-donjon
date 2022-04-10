@@ -16,20 +16,15 @@
     </table>
     <table  text-align="center">
       <tr>
-        <th class="titrenb">NOM du PNJ</th>
+        <th class="titrenb">NOM du défi</th>
         <th class="titrenb">nb PJ</th>
-        <th class="titrenb">type</th>
         <th class="titrenb">Nb Dés</th>
         <th class="titrenb">Dés/PJ</th>
         <th class="titrenb">Total</th>
       </tr>  
       <tr>
-        <td class="donneecentre" width="50%"><input  name="name" type="text" value="{{actor.name}}" placeholder="Name" /></div></td>
+        <td class="donneecentre" width="60%"><input  name="name" type="text" value="{{actor.name}}" placeholder="Name" /></div></td>
         <td class="donneecentre" width="10%"><input  name="data.nbjoueurs" type="text" value="{{data.nbjoueurs}}" placeholder="1" /></td>
-        <td class="donneecentre" width="10%"><select  name="data.type">
-                {{selectOptions TypesAdv selected=TypeValue}}
-                </select>
-             </td>
         <td class="donneecentre" width="10%"><input name="data.difficulte" type="text" value="{{data.difficulte}}" placeholder="0" /></td>
         <td class="donneecentre" width="10%"><input name="data.diffnbpj" type="text" value="{{data.diffnbpj}}" placeholder="0" /></td>
         <td class="donneecentre" width="10%"><input name="data.desTotal" type="text" value="{{data.desTotal}}" placeholder="0" /></td>
@@ -52,7 +47,7 @@
             {{#each data.lstdes as |des key|}}
             <td><label class ="selectDiceNPC" data-ref="reserve" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés : {{../data.repdessin}}{{des}}.png" height="35" width="35" alt="Dés-{{des}}"/></label></td>
             {{#if (ismultiple key 10)}}
-            </tr><tr  class="lstdescentrer">
+        </tr><tr  class="lstdescentrer">
             {{/if}}
             {{/each}}
         </tr>
@@ -69,55 +64,13 @@
         <tr class="lstdescentrer">
             {{#each data.bckpdes as |desB key|}}
             <td><label class ="selectDiceNPC" data-ref="backup" data-key="{{key}}"><img src="{{../data.repdessin}}{{desB}}.png" title="Dés : {{../data.repdessin}}{{desB}}.png" height="25" width="25" alt="Dés-{{desB}}"/></label></td>
-            {{#if (ismultiple key 15)}}
-        </tr><tr class="lstdescentrer">
+            {{#if (ismultiple key 10)}}
+        </tr><tr  class="lstdescentrer">
             {{/if}}
             {{/each}}
         </tr>
     </table>
-    <table >
-        <tr>
-            <td class="titrenb" width="50%">
-                Vulnérabilites
-            </td>
-            <td class="titrenb" width="50%">
-                Résistances
-            </td>
-        </tr>   
-        <tr>
-            <td>
-                <textarea name="data.vulnerabilite" rows="5">{{data.vulnerabilite}}</textarea>
-            </td>
-            <td>
-                <textarea name="data.resistance" rows="5">{{data.resistance}}</textarea>
-            </td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <th class="titrenb" width="7%"></th>
-            <th class="titrenb" width="28%">Nom de l'attaque</th>
-            <th class="titrenb" width="50%">Action</th>
-            <th class="titrenb" width="5%"></th>
-        </tr>
-        {{#each data.lstattaques as |obj ind|}}
-        <tr class="item" data-item-id="{{this.data._id}}">
-            <td><a class="select-attaque" title="choisir cette attaque" data-ref="{{obj.data.data.codede}}" data-key="{{key}}"> <img src="{{../data.repdessin}}{{obj.data.data.codede}}.png"  height="30" width="30" /></td>
-            <td>
-                {{name}}
-            </td>
-            <td class="lstdescentrer">
-                {{data.data.petitxt}}
-            </td>
-            <td class="lstdescentrer">
-                <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-            </td>
-        </tr>
-        {{/each}}
-        </tr>
-    </table>
-    description ou condition d'utilisation:
+    Description ou Condition d'utilisation:
     <textarea name="data.notes" rows="5">{{data.notes}}</textarea>
     <table>
         <tr  class="lstdescentrer">

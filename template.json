@@ -89,7 +89,8 @@
             "type":"obstacle",
             "difficulte":1,
             "lstdesjson":"",
-            "notes":""
+            "notes":"",
+            "bckpdesjson":"[]"
         },
         "defi":{
             "initialise":false,
@@ -97,9 +98,10 @@
             "couleurde":"noir",
             "type":"obstacle",
             "difficulte":1,
-            "lstdes":[],
+            "lstdesjson":"",
             "attaques":"",
-            "notes":""
+            "notes":"",
+            "bckpdesjson":"[]"
         },
         "plateaumonstre":{
             "initialise":false,
