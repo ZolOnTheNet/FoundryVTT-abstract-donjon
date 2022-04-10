@@ -92,7 +92,7 @@
         </tr>
         {{#each data.lstattaques as |obj ind|}}
         <tr class="item" data-item-id="{{this.data._id}}">
-            <td><img src="{{../data.repdessin}}{{obj.data.data.codede}}.png"  height="30" width="30" /></td>
+            <td><a class="select-attaque" title="choisir cette attaque" data-ref="{{obj.data.data.codede}}" data-key="{{key}}"> <img src="{{../data.repdessin}}{{obj.data.data.codede}}.png"  height="30" width="30" /></td>
             <td>
                 {{name}}
             </td>

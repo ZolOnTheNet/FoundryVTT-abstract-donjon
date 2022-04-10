@@ -146,6 +146,7 @@ export default class AbstractDActorSheet extends ActorSheet {
        } else if(this.actor.data.type == "pnj"){
             html.find('.select-annuler').click(this._onSelectAnnulerNPC.bind(this));
             html.find('.select-valider').click(this._onSelectValiderNPC.bind(this));
+            html.find('.select-attaque').click(this._onSelectAttaqueNPC.bind(this));
        }
        if(this.actor.data.type == "pnj") html.find('.pnj-showall').click(this._onPnjShowAll.bind(this));
     }
@@ -621,11 +622,14 @@ export default class AbstractDActorSheet extends ActorSheet {
         let persodata = this.actor.data.data;
         let indice = event.currentTarget.dataset.key;
         if(persodata.modeAttaque) { // le MJ a choisie une attaque et valide un dé
-            if(persodata.mindesattaque >= persodata.lstdes[indice]) {
+            if(persodata.mindesAttaque >= persodata.lstdes[indice]) {
                 // on a un dé au minimum de même puissance
-                
+                persodata.lstdes[indice]=0;
+                utils.simpleChatMessage("Le PNJ "+ this.actor.name +" attaque avec " + persodata.itemAttaque.data.name + "! <br> ce qui a comme Conséquence :<br>"+persodata.itemAttaque.data.data.petitxt);                
             } else {
-                // BEEEEPPPPP !
+                // BEEEEPPPPP ! pas la bonne puissance
+                console.log("AbstractD| BEPP | pas assez mon fils !")
+                // do noting ?
             }
         } else { //suppression du dé (modeAttaque sur normal en gros) on rajoute le backup
             // vérfier que l'on a bien lstdesjson et lstdes en accord...
@@ -688,6 +692,25 @@ export default class AbstractDActorSheet extends ActorSheet {
         //if(persodata.lstdesd !== undefined && persodata.lstdesd.length != persodata.lstdes.length) this.actor.update( { "lstdesd": persodata.lstdes });
         utils.simpleChatMessage("Le PNJ "+ this.actor.name +" a perdu " +nbdesperdus + " dés.");
         this.render(true);
+    }
+
+    _onSelectAttaqueNPC(event) {
+        // un de dés a été sélectionné pour choisir une attaque :
+        // ref : l'item
+        //const item = this.getItemFromEvent(event); // obtention de l'item
+        let codede = event.currentTarget.dataset.ref; // l'Item
+        let persodata = this.actor.data.data;
+        if(codede == 0) { // pas besoin de selectionner le dé
+            utils.simpleChatMessage("Le PNJ "+ this.actor.name +" attaque simplement avec " + item.data.name + "! <br> Sa cible a : "+item.data.data.petitxt);
+            persodata.modeAttaque =false;
+            persodata.mindesAttaque = 0;
+            persodata.itemAttaque = null;
+        } else {
+            const item = this.getItemFromEvent(event);
+            persodata.modeAttaque = true;
+            persodata.mindesAttaque = codede;
+            persodata.itemAttaque = item;
+        }
     }
     // fout le bordel
     // _updateObject(event, formData){
