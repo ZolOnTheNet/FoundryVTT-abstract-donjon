@@ -56,16 +56,21 @@ import  * as utils from "../utils.js";
         
         const data = actorData.data;
 
-        if(data.mapdesitems === undefined) {
+        if(data.mapdesitems === undefined || data.mapdessitems == "") {
             //mettre tous les json à "" car on part de zero
             data.mapdesitems="";
             data.uiddesitems="";
+            let jb = utils.backupMap(data, actorData.items);
+            data.mapdesitems=jb.lstdes; 
+            data.uiddesitems=jb.uiddes;
+
         } else { // premier essai pour reporter les valeurs des items
             let uiddes = JSON.parse(data.uiddesitems);
             let lstdes = JSON.parse(data.mapdesitems);
             if(data.mapdesitems.substring(0,2) == "[[") { // ceinture et bretelle
                 for(let i = 0; i < uiddes.length; i++){
                     let it = actorData.items.get(uiddes[i]);
+                    if(lstdes[i] === null) lstdes[i]= [1]; // cas de l'import
                     it.data.data.lstdes = lstdes[i];
                     it.data.data.lstdesjson = JSON.stringify(lstdes[i]);
                 }
@@ -116,16 +121,16 @@ import  * as utils from "../utils.js";
     }
 
      _prepareBDNpcData(actorData) {
-        if (actorData.type !== 'pnj') return;
+        if (actorData.type === 'personnage') return;
     
         // Make modifications to data here. For example:
         const data = actorData.data;
 
         if(data.nbpj === undefined &&  data.nbjoueurs === undefined) data.nbjoueurs =1; // promis quand je serai calcule le nombre de joueur !
             else if(data.nbjoueurs === undefined) data.nbjoueurs = data.nbpj;
-
+        if( data.diffnbpj == "") data.diffnbpj = 0;
         data.desTotal = parseInt(data.diffnbpj,10) * parseInt(data.nbjoueurs,10) + parseInt(data.difficulte,10); // on prend le mini des deux (10 dés par défaut)
-       
+        
         if(data.lstdesjson === undefined) data.lstdesjson = "";
         if(data.lstdesjson == "") {
             data.lstdes = utils.EtendLesDes([],data.desTotal); // initialisation de la liste
@@ -133,6 +138,7 @@ import  * as utils from "../utils.js";
         } else {
             data.lstdes = utils.EtendLesDes(data.lstdes, data.desTotal);
         }
+        //if(data.lstdesd === undefined || data.lstdesd.length != data.lstdes.length) {this.update( { "lstdesd": data.lstdes }); 
      }
   
      _prepareCharacterData(actorData) {
@@ -239,7 +245,7 @@ import  * as utils from "../utils.js";
      * Prepare NPC type specific data.
      */
     _prepareNpcData(actorData) {
-        if (actorData.type !== 'pnj') return;
+        if (actorData.type === 'personnage') return;
     
         const data = actorData.data;
         
@@ -258,7 +264,7 @@ import  * as utils from "../utils.js";
         if(modifie) {
             data.lstdesjson = JSON.stringify(data.lstdes); 
         }
-        
+    //    if(data.lstdesd === undefined || data.lstdesd.length != data.lstdes.length) this.update( { "lstdesd": data.lstdes }); 
     // Make modifications to data here. For example:
     //   const data = actorData.data;
     //   data.xp = (data.cr * data.cr) * 100;
