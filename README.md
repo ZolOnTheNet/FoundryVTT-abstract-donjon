@@ -12,9 +12,11 @@ based on the french translation book's of Abstact Dongeon : Abstract Donjon - i 
   - NPC sheet is in developpement 80%, backup selection for dice dommage
   - objects and tresorus : 100%
   - Traits : 100%
-  - Dice Attack (for NPC) : 50%
-  - obstacle : 0%
-  - defis : 0%
+  - Dice Attack (for NPC) : 100%
+  - obstacle : 100%
+  - defis : 100%
+  
+  with many bug, but time says !
   
   - translation : 0%
   
@@ -36,9 +38,9 @@ Objectif : utiliser le jeu, et perso apprendre le Javascript (et me permettre de
                   ajouter les dés des équipements (l'idée est que l'on peut mettre une armes ou un objet apportant un ou plusieurs dés pour que les joueurs les récupères
   - objets and trésors : 100%
   - Traits : 100%
-  - Dice Attack (for NPC) : 50%
-  - obstacle : 0%
-  - defis : 0%
+  - Dice Attack (for NPC) : 100%
+  - obstacle : 10%
+  - defis : 100%
   - Tableau de résolution : 0%, faire un espace permettant au joueur de selectionner leur ennemies et leurs alliés pour simuler une rencontre. En haut, il y aura les alliées, en bas, les ennemies dans cet ordre : Adversaires, demi-boss (+ tard), Boss. C'est un projet, je ne sais pas si c'est réalisable.
 
   - traduction : 0%
@@ -49,7 +51,7 @@ J'ai mis ce projet parce que je veux apprendre a faire un système sous FoundryV
 
 ## Instalation
 
-Holly God ! I didn't know about this ! dezip and copy to foundrydata/data/systems, may be !?
+Holly God ! I didn't know about this ! dezip and copy to foundrydata/data/systems, may be !? Own your risk !
 
-\<french\> : à la grace de dieu, j'ai pas encore lu cette affaire là !! Je dirais, dezipper les fichiers dans foundrydata/data/systems
+\<french\> : à la grace de dieu, j'ai pas encore lu cette affaire là !! Je dirais, dezipper les fichiers dans foundrydata/data/systems à vos risques et périls !
   
