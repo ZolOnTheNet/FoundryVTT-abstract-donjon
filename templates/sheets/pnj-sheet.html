@@ -3,10 +3,10 @@
     <table> 
         <tr>
             <td>
-                <a class="Ele-rerollall"  data-ref="ALL" data-key="all"><img src="systems/abstractd/ui/logoAD.png" title="Relance tous les dés du personnage" height="128" width="325" alt="Abstract Logo"/></a>
+                <a class="Ele-rerollall"  data-ref="ALL" data-key="all"><img src="systems/abstractd/ui/logoAD.png" title="Relance tous les dés du personnage" height="102" width="206" alt="Abstract Logo"/></a>
             </td>
             <td>
-                <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128" /> 
+                <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="102" width="" /> 
             </td>
             <td>
                 <br><br><a class="Ele-rerollall" title="Relance tous les dés" data-ref="ALL" data-key="all"><i class="fas fa-recycle"></i> tout relancer</a><br><br>
@@ -16,14 +16,16 @@
     </table>
     <table  text-align="center">
       <tr>
-        <th class="titrenb">NOM du PNJ</th>
-        <th class="titrenb">nb PJ</th>
-        <th class="titrenb">type</th>
-        <th class="titrenb">Nb Dés</th>
-        <th class="titrenb">Dés/PJ</th>
-        <th class="titrenb">Total</th>
+        <th class="titrenb" width="20%">Archetype</th>
+        <th class="titrenb" width="20%">NOM du PNJ</th>
+        <th class="titrenb" width="7%">nb PJ</th>
+        <th class="titrenb" width="12%">type</th>
+        <th class="titrenb" width="7%">Nb Dés</th>
+        <th class="titrenb" width="7">Dés/PJ</th>
+        <th class="titrenb" width="7%">Total</th>
       </tr>  
       <tr>
+        <td class="donneecentre" width="50%"><input  name="data.archetype" type="text" value="{{data.archetype}}" placeholder="Humain" /></div></td>
         <td class="donneecentre" width="50%"><input  name="name" type="text" value="{{actor.name}}" placeholder="Name" /></div></td>
         <td class="donneecentre" width="10%"><input  name="data.nbjoueurs" type="text" value="{{data.nbjoueurs}}" placeholder="1" /></td>
         <td class="donneecentre" width="10%"><select  name="data.type">
@@ -86,10 +88,10 @@
         </tr>   
         <tr>
             <td>
-                <textarea name="data.vulnerabilite" rows="5">{{data.vulnerabilite}}</textarea>
+                <textarea name="data.vulnerabilite" rows="2">{{data.vulnerabilite}}</textarea>
             </td>
             <td>
-                <textarea name="data.resistance" rows="5">{{data.resistance}}</textarea>
+                <textarea name="data.resistance" rows="2">{{data.resistance}}</textarea>
             </td>
         </tr>
     </table>
@@ -117,13 +119,8 @@
         {{/each}}
         </tr>
     </table>
-    description ou condition d'utilisation:
-    <textarea name="data.notes" rows="5">{{data.notes}}</textarea>
-    <table>
-        <tr  class="lstdescentrer">
-            {{#each data.lstdesd as |des key|}}
-            <td><label class ="selectDiceNPC" data-ref="reserve" data-key="{{key}}"><img src="{{../data.repdessin}}{{des}}.png" title="Dés : {{../data.repdessin}}{{des}}.png" height="35" width="35" alt="Dés-{{des}}"/></label></td>
-            {{/each}}
-        </tr>
-    </table>
+    Special:
+    <textarea name="data.speciale" rows="2">{{data.speciale}}</textarea>
+    description:
+    <textarea name="data.notes" rows="2">{{data.notes}}</textarea>
 </form>

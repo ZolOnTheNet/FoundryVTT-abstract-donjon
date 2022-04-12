@@ -71,15 +71,15 @@
             "couleurde":"noir",
             "repdessin":"systems/abstractd/ui/d6-noir-",
             "type":"boss",
+            "archetype":"",
             "diffnbpj":5,
             "difficulte":10,
             "lstdesjson":"",
-            "lstdesd":[],
-            "lstattaques":[],
             "objets":[],
             "vulnerabilite":"",
             "resistance":"",
             "notes":"",
+            "speciale":"",
             "bckpdesjson":"[]"
         },
         "obstacle":{
@@ -133,7 +133,6 @@
         },
         "deattaque": {
             "codede":6,
-            "nom":"morsure",
             "petitxt":"-1 en force"
         }
     }

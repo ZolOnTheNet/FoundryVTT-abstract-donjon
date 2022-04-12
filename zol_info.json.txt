@@ -1,3 +1,14 @@
+// ajout d'un item dans un acteur de pnj2 est un acteur qui possède un item lpTFLfL3dH4fOPG5
+it = game.items.getName("Modele d'attaque"); // va cherche le modele d'attaque
+it.update({ name:"Attaque tournoyante", data: {codede:"2", petitxt:"-1 en Force pour tous les adversaires" }}); // différent modifs
+pnj1 = game.actors.getName("pnj 1")
+await pnj1.createEmbeddedDocuments('Item', [it.toObject()]); // et Hop c'est magique !
+
+
+it1 = pnj2.items.get("lpTFLfL3dH4fOPG5");
+it1_1 = itl.clone();
+await pnj1.createEmbeddedDocuments('Item', [it1_1.toObject()]);
+
 //dedans je mets toutes les petites structures dans les tables []
 lstdes : [unde...]
     unde: {
