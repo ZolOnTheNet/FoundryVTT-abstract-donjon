@@ -27,7 +27,7 @@ export default class AbstractDActorSheet extends ActorSheet {
             actor : baseData.actor,
             data: baseData.actor.data.data,
             items: baseData.actor.items,
-            texteAff : "text",  // mettre sur text pour les voir, sur hidden pour les cacher
+            texteAff : "hidden",  // mettre sur text pour les voir, sur hidden pour les cacher
             initToZero: false, 
             repDessin : "",
             isDMG : false,
@@ -143,6 +143,7 @@ export default class AbstractDActorSheet extends ActorSheet {
        // generique de lancer dé 
        if(this.actor.data.type == "personnage") html.find('.Ele-reroll').click(this._onRerollEle.bind(this));
        html.find('.Ele-rerollall').click(this._RerollAllEle.bind(this));
+       html.find('.Full-rerollall').click(this._FullRerollAllEle.bind(this))
        if(this.actor.data.type == "personnage") html.find('.Ele-fullrerollall').click(this._FullRerollAllEle.bind(this));
        
        // selection 
@@ -204,9 +205,32 @@ export default class AbstractDActorSheet extends ActorSheet {
         const baseData = super.getData();
         const persodata = baseData.actor.data.data;
         //let diceRef = event.currentTarget.dataset.ref;
-        let indice = event.currentTarget.dataset.key
-        if(persodata.selection.lstindice[indice]>0) { // le dé a été informé
-            console.log("vous avez choisi :" + utils.resumerVenantDe(persodata.selection.lstdes[indice], persodata.selection.lstprov[indice], persodata.selection.lstindice[indice]));
+        let i = event.currentTarget.dataset.key
+        if(persodata.selection.lstindice[i]> -1) { // le dé a été informé
+            console.log("vous avez choisi :" + utils.resumerVenantDe(persodata.selection.lstdes[i], persodata.selection.lstprov[i], persodata.selection.lstindice[i]));
+            if(persodata.selection.lstprov[i].length < 7) { // atribut
+                let atr = persodata.selection.lstprov[i].toLowerCase();
+                let ind = persodata.selection.lstindice[i];
+                persodata[atr].lstdes[ind] = persodata.selection.lstdes[i];
+                persodata[atr].lstdesjson = JSON.stringify(persodata[atr].lstdes);
+            } else {
+                let it = baseData.actor.data.items.get(persodata.selection.lstprov[i]);
+                it.data.data.lstdes[persodata.selection.lstindice[i]] = persodata.selection.lstdes[i];
+                it.data.data.lstdesjson = JSON.stringify(it.data.data.lstdes);
+                baseData.actor.data.items.set(persodata.selection.lstprov[i], it); // un get un set
+                // maintenant synchro avec la map des items
+                //console.log("vous avez choisi : "+item+":"+indice);
+                let jb = utils.backupMap(this.actor.data.data, this.actor.items);
+                this.actor.data.data.mapdesitems=jb.lstdes; 
+                this.actor.data.data.uiddesitems=jb.uiddes;
+            }
+            persodata.selection.lstdes[i] = 0;
+            persodata.selection.lstprov[i] = "SEL";
+            persodata.selection.lstindice[i] = -1;
+            persodata.selection.lstdesjson = JSON.stringify(persodata.selection.lstdes);
+            persodata.selection.lstprovjson = JSON.stringify(persodata.selection.lstprov);
+            persodata.selection.lstindicejson = JSON.stringify(persodata.selection.lstindice);
+            this.render(true);
         }
    
      }
@@ -218,7 +242,7 @@ export default class AbstractDActorSheet extends ActorSheet {
      * @memberof AbstractDActorSheet
      */
     _onSelectDiceItem(event){
-        switch (data.actor.data.type) {
+        switch (this.actor.data.type) {
             case "personnage":
                 console.log("Choix d'un item ! _onSelectDiceItem ------------------");
                 console.log(event);
@@ -231,7 +255,7 @@ export default class AbstractDActorSheet extends ActorSheet {
                 console.log("vous avez choisi : "+itemRef+":"+indice);
                 let itmb = baseDataN.items.get(itemRef).data;
                 if(itmb !== undefined) {
-                    if(itmb.data.lstdes[indice] >0 ) { // sauvegardable
+                    if(itmb.data.lstdes[indice] > 0 ) { // sauvegardable
                         let seli = utils.selIndice(persodata, itmb.type, indice); // cherche une place
                         persodata.selection.lstprov[seli] = itemRef;
                         persodata.selection.lstindice[seli] = indice;
@@ -372,7 +396,6 @@ export default class AbstractDActorSheet extends ActorSheet {
                     let jb = utils.backupMap(this.actor.data.data, this.actor.items);
                     this.actor.data.data.mapdesitems=jb.lstdes; 
                     this.actor.data.data.uiddesitems=jb.uiddes;
-                     let i = 0; // pour le stop
                 } else { // attributs
                     const baseData = super.getData();
                     const persodata = baseData.actor.data.data;
@@ -403,6 +426,57 @@ export default class AbstractDActorSheet extends ActorSheet {
                 //yes: () => this.actor.deleteOwnedItem(item._id), transofmer car les OwnedItem n'existe plus => transformer
                 // simplement par l'objet que l'on supprime (objet à id unique)
                 yes: () =>{
+                    const persodata = this.actor.data.data;
+                    const actor = this.actor;            
+                    switch (actor.data.type) {
+                        case "personnage":
+                            console.log("AbstractD | reroll All ");
+                            let attrib = ["for","dex","int","sag","bonus"];
+                            attrib.forEach((atr, index) => {
+                                persodata[atr].lstdes = utils.relancerLesDes(persodata[atr].lstdes, persodata[atr].nbdes, true);
+                                persodata[atr].lstdesjson = JSON.stringify(persodata[atr].lstdes);
+                                console.log("Creation dés de "+atr);
+                            });
+                            // cas du bonus
+                            if(persodata.bonus.lstdes[0] != 6 ) { 
+                                persodata.bonus.lstdes[0] = 6;
+                                persodata.bonus.lstdesjson = JSON.stringify(persodata.bonus.lstdes);
+                            }
+                            // cas de la selection
+                            for(let i = 0; i < persodata.selection.lstdes.length; i++) {
+                                persodata.selection.lstdes[i] = 0;
+                                persodata.selection.lstprov[i] = "SEL";
+                                persodata.selection.lstindice[i] = -1;
+                            }
+                            persodata.selection.lstdesjson = JSON.stringify(persodata.selection.lstdes);
+                            persodata.selection.lstprovjson = JSON.stringify(persodata.selection.lstprov);
+                            persodata.selection.lstindicejson = JSON.stringify(persodata.selection.lstindice);
+                            // cas des items : AFAIRE      
+                            for (let item of this.actor.items){
+                                const itemdata = item.data.data;
+                                if(itemdata.lstdes === undefined) itemdata.lstdes = JSON.parse(itemdata.lstdesjson);
+                                itemdata.lstdes = utils.relancerLesDes(itemdata.lstdes,itemdata.nbdes, true);
+                                itemdata.lstdesjson = JSON.stringify(itemdata.lstdes);
+                                let jb = utils.backupMap(this.actor.data.data, this.actor.items);
+                                this.actor.data.data.mapdesitems=jb.lstdes; 
+                                this.actor.data.data.uiddesitems=jb.uiddes;
+                            }
+                            this.render(true);        
+                            break;
+                        case "defi":
+                        case "obstacle": // même comportement mais avec dommage ou pas
+                        case "pnj": // a envisager : gestion de item => armes magiques
+                            if(persodata.lstdes === undefined) persodata.lstdes = [];
+                            persodata.lstdes = utils.relancerLesDes(persodata.lstdes, persodata.nbdes, true);
+                            persodata.lstdesjson = JSON.stringify(persodata.lstdes);      
+                            this.render(true);          
+                            break;
+                        case "plateaumonstre": // quand j'aurais fini le reste
+                            break;
+                         default:
+                            break;
+                    }
+                    
                 }, 
                 no: () => {
                     return;
@@ -410,49 +484,6 @@ export default class AbstractDActorSheet extends ActorSheet {
                 defaultYes: false
             });
         // cas des attributs
-        const persodata = this.actor.data.data;
-        const actor = this.actor;
-
-        switch (actor.data.type) {
-            case "personnage":
-                console.log("AbstractD | reroll All ");
-                let attrib = ["for","dex","int","sag","bonus"];
-                attrib.forEach((atr, index) => {
-                    persodata[atr].lstdes = utils.relancerLesDes(persodata[atr].lstdes, persodata[atr].nbdes, true);
-                    persodata[atr].lstdesjson = JSON.stringify(persodata[atr].lstdes);
-                    console.log("Creation dés de "+atr);
-                });
-                // cas du bonus
-                if(persodata.bonus.lstdes[0] != 6 ) { 
-                    persodata.bonus.lstdes[0] = 6;
-                    persodata.bonus.lstdesjson = JSON.stringify(data.bonus.lstdes);
-                }
-                // cas de la selection
-                for(let i = 0; i < persodata.selection.lstdes.length; i++) {
-                    persodata.selection.lstdes[i] = 0;
-                    persodata.selection.lstprov[i] = "SEL";
-                    persodata.selection.lstindice[i] = -1;
-                }
-                persodata.selection.lstdesjson = JSON.stringify(persodata.selection.lstdes);
-                persodata.selection.lstprovjson = JSON.stringify(persodata.selection.lstprov);
-                persodata.selection.lstindicejson = JSON.stringify(persodata.selection.lstindice);
-                // cas des items : AFAIRE                
-                break;
-            case "defi":
-            case "obstacle": // même comportement mais avec dommage ou pas
-            case "pnj": // a envisager : gestion de item => armes magiques
-                if(persodata.lstdes === undefined) persodata.lstdes = [];
-                persodata.lstdes = utils.relancerLesDes(persodata.lstdes, persodata.nbdes, true);
-                persodata.lstdesjson = JSON.stringify(persodata.lstdes);                
-                break;
-            case "plateaumonstre": // quand j'aurais fini le reste
-                break;
-             default:
-                break;
-        }
-        
-        
-
     }
 // -- Selection --------------
     /**
