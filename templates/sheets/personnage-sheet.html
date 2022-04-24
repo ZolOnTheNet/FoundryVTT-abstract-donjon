@@ -11,9 +11,14 @@
             <td>
                 <a class="Full-rerollall" title="Relance tous les dés" data-ref="ALL" data-key="all"><i class="fas fa-recycle"></i> tout relancer</a><br><br>
                 {{#if isDMG }}
-                <a class="mode-dommage" title="mode dommage" data-ref="dmg"><i class="fas fa-toggle-on"></i> &nbsp;Dommage</a>
+                    <a class="mode-dommage" title="mode dommage-soin" data-ref="dmg"><i class="fas fa-toggle-on"></i> &nbsp;Dom.&Soin</a><br><br>
+                    {{#if isNEG }}
+                    <a class="mode-faire-dommage" title="mode-dommage" data-ref="dmg"><i class="fas fa-toggle-on"></i> &nbsp;blessures</a>
+                    {{else}}
+                    <a class="mode-faire-dommage" title="mode-soin" data-ref="nor">Soins&nbsp;<i class="fas fa-toggle-off"></i></a>
+                    {{/if}}
                 {{else}}
-                <a class="mode-dommage" title="mode normal" data-ref="nor">Normal&nbsp;<i class="fas fa-toggle-off"></i></a>
+                    <a class="mode-dommage" title="mode normal" data-ref="nor">Normal&nbsp;<i class="fas fa-toggle-off"></i></a>
                 {{/if}}
             </td>
         </tr>

@@ -31,6 +31,7 @@ export default class AbstractDActorSheet extends ActorSheet {
             initToZero: false, 
             repDessin : "",
             isDMG : false,
+            isNEG : false,
             isCMB: true  // mettre les jsons a vide dans PJinit;
         };
 
@@ -48,8 +49,10 @@ export default class AbstractDActorSheet extends ActorSheet {
             persodata.traits = data.items.filter(item => item.type === "trait");
             persodata.objets = data.items.filter(item => item.type === "objet");
             data.isCMB = persodata.selection.mode == "cmb";
-            if(data.data.dmg === undefined) data.data.dmg = false;
+            if(data.data.dmg === undefined) data.data.dmg = false; // mise en place du mode NORMAL/Dommage et Soin
+            if(data.data.suppr === undefined) data.data.suppr = true; // mise en place du mode 
             data.isDMG = data.data.dmg;
+            data.isNEG = data.data.suppr;
             persodata.selection.lstori = [];
             if(persodata.selection.lstdes === undefined) persodata.selection.lstdes =[];
             for(let i = 0; i < persodata.selection.lstdes.length; i++) {
@@ -135,7 +138,11 @@ export default class AbstractDActorSheet extends ActorSheet {
         html.find('.selectDice').click(this._onSelectDiceAttr.bind(this));
         html.find('.selectItemDice').click(this._onSelectDiceItem.bind(this));
         html.find('.selectSelDice').click(this._onSelectDiceSelection.bind(this));
-        if(this.actor.data.type == "personnage") html.find('.mode-dommage').click(this._onModeDommage.bind(this));
+        if(this.actor.data.type == "personnage") {
+            
+            html.find('.mode-dommage').click(this._onModeDommage.bind(this));
+            html.find('.mode-faire-dommage').click(this._onModeNeg.bind(this));
+        }
         else html.find('.selectDiceNPC').click(this._onSelectDiceSelectionNPC.bind(this));
          // items 
         html.find('.item-edit').click(this._onItemEdit.bind(this));
@@ -302,9 +309,17 @@ export default class AbstractDActorSheet extends ActorSheet {
                 const persodata = baseData.actor.data.data;
                 let atr = event.currentTarget.dataset.ref;
                 let indice = event.currentTarget.dataset.key
-                if(this.actor.data.data.dmg) {
+                if(this.actor.data.data.dmg) {                    
                     if(persodata[atr].lstdes[indice]> 0) {
-                        persodata[atr].lstdes[indice]--;
+                        if(this.actor.data.data.suppr) {
+                            persodata[atr].lstdes[indice]--;
+                            if(persodata[atr].lstdes[indice] < 1) persodata[atr].lstdes[indice] =1;
+                            else utils.simpleChatMessage("le Personnage vient de perdre 1 point en "+atr+"("+indice+"): "+(persodata[atr].lstdes[indice]+1) + "=>"+persodata[atr].lstdes[indice]);
+                        } else {
+                            persodata[atr].lstdes[indice]++;
+                            if(persodata[atr].lstdes[indice]>6) persodata[atr].lstdes[indice] = 6;
+                            else utils.simpleChatMessage("le Personnage vient de gagner 1 point en "+atr+"("+indice+"): "+(persodata[atr].lstdes[indice]-1) + "=>"+persodata[atr].lstdes[indice]);
+                        }
                         persodata[atr].lstdesjson = JSON.stringify(persodata[atr].lstdes);
                     }
                 } else {
@@ -355,6 +370,11 @@ export default class AbstractDActorSheet extends ActorSheet {
 
     _onModeDommage(event) {
         this.actor.data.data.dmg = ! this.actor.data.data.dmg;
+        this.render(true);
+    }
+
+    _onModeNeg(event) {
+        this.actor.data.data.suppr = ! this.actor.data.data.suppr;
         this.render(true);
     }
 
