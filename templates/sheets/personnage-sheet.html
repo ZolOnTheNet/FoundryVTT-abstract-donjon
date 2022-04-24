@@ -3,17 +3,22 @@
     <table> 
         <tr>
             <td>
-                <a class="Ele-rerollall"  data-ref="ALL" data-key="all"><img src="systems/abstractd/ui/logoAD.png" title="Relance tous les dés du personnage" height="128" width="325" alt="Abstract Logo"/></a>
+                <a class="Full-rerollall"  data-ref="ALL" data-key="all"><img src="systems/abstractd/ui/logoAD.png" title="Relance tous les dés du personnage" height="128" width="325" alt="Abstract Logo"/></a>
             </td>
             <td>
                 <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128" /> 
             </td>
             <td>
-                <a class="Ele-rerollall" title="Relance tous les dés" data-ref="ALL" data-key="all"><i class="fas fa-recycle"></i> tout relancer</a><br><br>
+                <a class="Full-rerollall" title="Relance tous les dés" data-ref="ALL" data-key="all"><i class="fas fa-recycle"></i> tout relancer</a><br><br>
                 {{#if isDMG }}
-                <a class="mode-dommage" title="mode dommage" data-ref="dmg"><i class="fas fa-toggle-on"></i> &nbsp;Dommage</a>
+                    <a class="mode-dommage" title="mode dommage-soin" data-ref="dmg"><i class="fas fa-toggle-on"></i> &nbsp;Dom.&Soin</a><br><br>
+                    {{#if isNEG }}
+                    <a class="mode-faire-dommage" title="mode-dommage" data-ref="dmg"><i class="fas fa-toggle-on"></i> &nbsp;blessures</a>
+                    {{else}}
+                    <a class="mode-faire-dommage" title="mode-soin" data-ref="nor">Soins&nbsp;<i class="fas fa-toggle-off"></i></a>
+                    {{/if}}
                 {{else}}
-                <a class="mode-dommage" title="mode normal" data-ref="nor">Normal&nbsp;<i class="fas fa-toggle-off"></i></a>
+                    <a class="mode-dommage" title="mode normal" data-ref="nor">Normal&nbsp;<i class="fas fa-toggle-off"></i></a>
                 {{/if}}
             </td>
         </tr>
