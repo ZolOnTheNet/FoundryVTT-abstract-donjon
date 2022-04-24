@@ -1,3 +1,12 @@
+// création minimum d'un Acteur de
+ Actor.create({name:"Nouveau PNJ", type:"pnj"}); // il n'y que le nom et le type
+ let actor = await Actor.create({ // dans l'API : avec icon en plus
+  name: "New Test Actor",
+  type: "character",
+  img: "artwork/character-profile.jpg"
+});
+actor.data : il y a l'id, l'image, et data qui contient les données (donc pour les avoir il faut actor.data.data)
+
 // ajout d'un item dans un acteur de pnj2 est un acteur qui possède un item lpTFLfL3dH4fOPG5
 it = game.items.getName("Modele d'attaque"); // va cherche le modele d'attaque
 it.update({ name:"Attaque tournoyante", data: {codede:"2", petitxt:"-1 en Force pour tous les adversaires" }}); // différent modifs
