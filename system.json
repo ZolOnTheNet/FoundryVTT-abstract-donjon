@@ -2,7 +2,7 @@
     "name": "abstractd",
     "title": "Abstract Donjon",
     "description": "Le système d'abstract Donjon FR FoundryVTT!",
-    "version": "0.0.2",
+    "version": "#{VERSION}#",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9",
     "templateVersion": 2,
@@ -16,8 +16,8 @@
     "gridUnits": "m",
     "primaryTokenAttribute": "",
     "secondaryTokenAttribute": "",
-    "url": "",
-    "manifest": "",
-    "download": "",
+    "url": "#{URL}#",
+    "manifest": "#{MANIFEST}#",
+    "download": "#{DOWNLOAD}#",
     "license": "LICENSE.txt"
   }
