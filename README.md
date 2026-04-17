@@ -1,4 +1,6 @@
 # FoundryVTT-AbstractDongeon
+Not compatible with the 12,13 & 14's foundryvtt version.
+
 a French Version of Abstract Dongeon game system for FoundryVTT. It's my first system game !
 in development, be award.
 
